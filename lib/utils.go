@@ -47,7 +47,7 @@ func getDE() string {
 	return "to be implemented"
 }
 
-func countPkgs() (int, error) {
+func countPackages() (int, error) {
 	var count int
 	files, err := ioutil.ReadDir(pacmanDir)
 	if err != nil {

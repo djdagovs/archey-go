@@ -237,7 +237,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Packages {
-		n, err := countPkgs()
+		n, err := countPackages()
 		if err != nil {
 			return nil, err
 		}
@@ -295,6 +295,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		default:
 			return nil, ErrInvalidDiskUnit(opt.DiskUnit)
 		}
+
 		rootFormat := fmt.Sprintf(infoFormat,
 			nameColor("Root"), sepColor(opt.Sep), textColor(rootfsUsage))
 		info = append(info, rootFormat)

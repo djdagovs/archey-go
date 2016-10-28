@@ -86,11 +86,11 @@ func main() {
 		},
 		cli.StringFlag{
 			Name:  "memory-unit",
-			Usage: "unit to use for printing memory usage",
+			Usage: "unit to use for memory usage",
 		},
 		cli.StringFlag{
 			Name:  "disk-unit",
-			Usage: "unit to use for printing disk usage",
+			Usage: "unit to use for disk usage",
 		},
 		cli.StringFlag{
 			Name:  "paths",
