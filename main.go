@@ -11,7 +11,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "Archey"
-	app.Usage = "a utility to display system info in a pretty way"
+	app.Usage = "a tool to display system info in a pretty way"
 	app.HideVersion = true
 	app.Authors = []cli.Author{
 		cli.Author{

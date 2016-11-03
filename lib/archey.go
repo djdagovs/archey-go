@@ -11,6 +11,7 @@ import (
 	"text/template"
 
 	"github.com/alectic/sysinfo"
+	utils "github.com/alectic/utils-go"
 	"github.com/mgutz/ansi"
 )
 
@@ -49,6 +50,9 @@ type Options struct {
 	Show       Show
 	Colors     Colors
 }
+
+// pacman's local database of installed packages
+const pacmanDir = "/var/lib/pacman/local"
 
 // default options
 const (
@@ -173,7 +177,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if !opt.Show.OS {
 		distroFormat := fmt.Sprintf(infoFormat,
-			nameColor("OS"), sepColor(opt.Sep), textColor(node.OSName))
+			nameColor("OS"), sepColor(opt.Sep), textColor(node.OSName+" "+node.Machine))
 		info = append(info, distroFormat)
 	}
 
@@ -237,13 +241,14 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Packages {
-		n, err := countPackages()
+		count, err := utils.CountDir(pacmanDir)
 		if err != nil {
 			return nil, err
 		}
 
+		n := strconv.Itoa(count.Dirs)
 		packagesFormat := fmt.Sprintf(infoFormat,
-			nameColor("Packages"), sepColor(opt.Sep), textColor(strconv.Itoa(n)))
+			nameColor("Packages"), sepColor(opt.Sep), textColor(n))
 		info = append(info, packagesFormat)
 	}
 
