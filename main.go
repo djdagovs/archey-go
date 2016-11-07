@@ -96,6 +96,10 @@ func main() {
 			Name:  "paths",
 			Usage: "additional paths to add to disk usage info",
 		},
+		cli.BoolFlag{
+			Name:  "path-full",
+			Usage: "show full paths",
+		},
 		cli.StringFlag{
 			Name:  "name-color",
 			Usage: "color of the variable name",
@@ -160,6 +164,8 @@ func main() {
 		if len(c.String("paths")) != 0 {
 			opt.Paths = c.String("paths")
 		}
+
+		opt.PathFull = c.Bool("path-full")
 
 		if c.String("name-color") != "" {
 			opt.Colors.Name = c.String("name-color")

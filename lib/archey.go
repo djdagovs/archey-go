@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"os"
 	"os/user"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"text/template"
@@ -47,6 +48,7 @@ type Options struct {
 	DiskUnit   string
 	MemoryUnit string
 	Paths      string
+	PathFull   bool
 	Show       Show
 	Colors     Colors
 }
@@ -61,7 +63,7 @@ const (
 	defMemoryUnit = defDiskUnit // default unit for printing memory usage
 )
 
-const maxPaths = 5 // max number of paths allowed
+const maxPaths = 4 // max number of paths allowed
 
 // Name Sep Info
 const infoFormat = "%s%s %s" // eg. OS: Linux
@@ -304,8 +306,13 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			return nil, ErrInvalidDiskUnit(opt.DiskUnit)
 		}
 
+		pathName := "Root"
+		if opt.PathFull {
+			pathName = "/root"
+		}
+
 		rootFormat := fmt.Sprintf(infoFormat,
-			nameColor("Root"), sepColor(opt.Sep), textColor(rootfsUsage))
+			nameColor(pathName), sepColor(opt.Sep), textColor(rootfsUsage))
 		info = append(info, rootFormat)
 	}
 
@@ -327,14 +334,19 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			return nil, ErrInvalidDiskUnit(opt.DiskUnit)
 		}
 
+		pathName := "Home"
+		if opt.PathFull {
+			pathName = "/home"
+		}
+
 		homeFormat := fmt.Sprintf(infoFormat,
-			nameColor("Home"), sepColor(opt.Sep), textColor(homefsUsage))
+			nameColor(pathName), sepColor(opt.Sep), textColor(homefsUsage))
 		info = append(info, homeFormat)
 	}
 
 	if len(opt.Paths) != 0 {
 		paths := strings.Split(opt.Paths, ",")
-		// if passed paths exceeds maxPaths
+		// if passed paths exceed maxPaths
 		if len(paths) > maxPaths {
 			return nil, ErrExcessivePaths
 		}
@@ -344,6 +356,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			if err := pathfs.Get(path); err != nil {
 				return nil, err
 			}
+
 			var pathfsUsage string
 			switch opt.DiskUnit {
 			case "mb":
@@ -354,7 +367,13 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			default:
 				return nil, ErrInvalidDiskUnit(opt.DiskUnit)
 			}
-			pathFormat := fmt.Sprintf(infoFormat,
+
+			var pathFormat string
+			if !opt.PathFull {
+				path = strings.Title(strings.ToLower(filepath.Base(path)))
+			}
+
+			pathFormat = fmt.Sprintf(infoFormat,
 				nameColor(path), sepColor(opt.Sep), textColor(pathfsUsage))
 			info = append(info, pathFormat)
 		}
