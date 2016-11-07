@@ -33,6 +33,10 @@ func main() {
 			Usage: "don't print os name",
 		},
 		cli.BoolFlag{
+			Name:  "no-arch",
+			Usage: "don't print architecture",
+		},
+		cli.BoolFlag{
 			Name:  "no-kernel",
 			Usage: "don't print kernel version",
 		},
@@ -136,6 +140,7 @@ func main() {
 		opt.Show.User = c.Bool("no-user")
 		opt.Show.Hostname = c.Bool("no-hostname")
 		opt.Show.OS = c.Bool("no-os")
+		opt.Show.Arch = c.Bool("no-arch")
 		opt.Show.Kernel = c.Bool("no-kernel")
 		opt.Show.Uptime = c.Bool("no-uptime")
 		opt.Show.WM = c.Bool("no-wm")

@@ -22,6 +22,7 @@ type Show struct {
 	User     bool
 	Hostname bool
 	OS       bool
+	Arch     bool
 	Kernel   bool
 	Uptime   bool
 	WM       bool
@@ -178,8 +179,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.OS {
+		osName := node.OSName + " " + node.Machine
+		if opt.Show.Arch {
+			osName = node.OSName
+		}
 		distroFormat := fmt.Sprintf(infoFormat,
-			nameColor("OS"), sepColor(opt.Sep), textColor(node.OSName+" "+node.Machine))
+			nameColor("OS"), sepColor(opt.Sep), textColor(osName))
 		info = append(info, distroFormat)
 	}
 
@@ -294,6 +299,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		if err := rootfs.Get("/"); err != nil {
 			return nil, err
 		}
+
 		var rootfsUsage string
 		switch opt.DiskUnit {
 		case "mb":
