@@ -203,10 +203,13 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, hostnameFormat)
 	}
 
-	// TODO: implement - alectic (27 Oct 2016)
 	if !opt.Show.Uptime {
+		up := sysinfo.NewUptime()
+		if err := up.Get(); err != nil {
+			return nil, err
+		}
 		uptimeFormat := fmt.Sprintf(infoFormat,
-			nameColor("Uptime"), sepColor(opt.Sep), textColor("to be implemented"))
+			nameColor("Uptime"), sepColor(opt.Sep), textColor(up.String()))
 		info = append(info, uptimeFormat)
 	}
 
