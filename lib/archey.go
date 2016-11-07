@@ -25,6 +25,7 @@ type Show struct {
 	Arch     bool
 	Kernel   bool
 	Uptime   bool
+	UpSince  bool
 	WM       bool
 	DE       bool
 	Terminal bool
@@ -183,6 +184,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		if opt.Show.Arch {
 			osName = node.OSName
 		}
+
 		distroFormat := fmt.Sprintf(infoFormat,
 			nameColor("OS"), sepColor(opt.Sep), textColor(osName))
 		info = append(info, distroFormat)
@@ -210,14 +212,21 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, hostnameFormat)
 	}
 
+	up := sysinfo.NewUptime()
+	if err := up.Get(); err != nil {
+		return nil, err
+	}
+
 	if !opt.Show.Uptime {
-		up := sysinfo.NewUptime()
-		if err := up.Get(); err != nil {
-			return nil, err
-		}
 		uptimeFormat := fmt.Sprintf(infoFormat,
 			nameColor("Uptime"), sepColor(opt.Sep), textColor(up.String()))
 		info = append(info, uptimeFormat)
+	}
+
+	if !opt.Show.UpSince {
+		upSinceFormat := fmt.Sprintf(infoFormat,
+			nameColor("Up since"), sepColor(opt.Sep), textColor(up.UpSince()))
+		info = append(info, upSinceFormat)
 	}
 
 	if !opt.Show.WM {

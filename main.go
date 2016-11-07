@@ -45,6 +45,10 @@ func main() {
 			Usage: "don't print uptime",
 		},
 		cli.BoolFlag{
+			Name:  "no-up-since",
+			Usage: "don't print up since",
+		},
+		cli.BoolFlag{
 			Name:  "no-wm",
 			Usage: "don't print Window Manager name",
 		},
@@ -143,6 +147,7 @@ func main() {
 		opt.Show.Arch = c.Bool("no-arch")
 		opt.Show.Kernel = c.Bool("no-kernel")
 		opt.Show.Uptime = c.Bool("no-uptime")
+		opt.Show.UpSince = c.Bool("no-up-since")
 		opt.Show.WM = c.Bool("no-wm")
 		opt.Show.DE = c.Bool("no-de")
 		opt.Show.Terminal = c.Bool("no-terminal")
