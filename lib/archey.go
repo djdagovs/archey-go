@@ -170,6 +170,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	nameColor := ansi.ColorFunc(opt.Colors.Name)
 	textColor := ansi.ColorFunc(opt.Colors.Text)
 	sepColor := ansi.ColorFunc(opt.Colors.Sep)
+	diskUnit := strings.ToLower(opt.DiskUnit)
 
 	// hold the info format lines
 	info := []string{}
@@ -278,13 +279,15 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		}
 
 		var memUsage string
-		switch opt.MemoryUnit {
+		switch strings.ToLower(opt.MemoryUnit) {
 		case "mb":
 			memUsage = fmt.Sprintf("%.1f MB / %.1f MB",
 				mem.UsedMemInMB(), mem.TotalMemInMB())
 		case "gb":
 			memUsage = fmt.Sprintf("%.1f GB / %.1f GB",
 				mem.UsedMemInGB(), mem.TotalMemInGB())
+		default:
+			return nil, ErrInvalidMemUnit(opt.MemoryUnit)
 		}
 
 		memoryFormat := fmt.Sprintf(infoFormat,
@@ -310,7 +313,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		}
 
 		var rootfsUsage string
-		switch opt.DiskUnit {
+		switch diskUnit {
 		case "mb":
 			rootfsUsage = fmt.Sprintf("%.1f MB / %.1f MB",
 				rootfs.UsedSpaceInMB(), rootfs.TotalSizeInMB())
@@ -338,7 +341,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		}
 
 		var homefsUsage string
-		switch opt.DiskUnit {
+		switch diskUnit {
 		case "mb":
 			homefsUsage = fmt.Sprintf("%.1f MB / %.1f MB",
 				homefs.UsedSpaceInMB(), homefs.TotalSizeInMB())
@@ -361,8 +364,8 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if len(opt.Paths) != 0 {
 		paths := strings.Split(opt.Paths, ",")
-		// if passed paths exceed maxPaths
-		if len(paths) > maxPaths {
+		// if passed paths exceed number of available spots in archLogo
+		if len(paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
 			return nil, ErrExcessivePaths
 		}
 
@@ -373,7 +376,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			}
 
 			var pathfsUsage string
-			switch opt.DiskUnit {
+			switch diskUnit {
 			case "mb":
 				pathfsUsage = fmt.Sprintf("%.1f MB / %.1f MB",
 					pathfs.UsedSpaceInMB(), pathfs.TotalSizeInMB())
