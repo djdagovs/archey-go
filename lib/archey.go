@@ -19,11 +19,11 @@ import (
 type info map[string]string
 
 type Show struct {
-	User     bool
-	Hostname bool
 	OS       bool
 	Arch     bool
 	Kernel   bool
+	User     bool
+	Hostname bool
 	Uptime   bool
 	UpSince  bool
 	WM       bool
@@ -49,7 +49,7 @@ type Options struct {
 	Sep        string
 	DiskUnit   string
 	MemoryUnit string
-	Paths      string
+	Paths      []string
 	PathFull   bool
 	Show       Show
 	Colors     Colors
@@ -65,19 +65,17 @@ const (
 	defMemoryUnit = defDiskUnit // default unit for printing memory usage
 )
 
-const maxPaths = 4 // max number of paths allowed
-
 // Name Sep Info
 const infoFormat = "%s%s %s" // eg. OS: Linux
 
 // default info colors
 const (
-	defNameColor  = "yellow+h" // default color of the variable name
-	defTextColor  = "white+h"  // default color of the text
-	defSepColor   = "white"    // default color of the separator
-	defBodyColor1 = "cyan+h"   // default color of upper body of the logo
-	defBodyColor2 = "cyan"     // default color of lower body of the logo
-	resetColor    = "reset"    // reset color
+	defNameColor  = "cyan+h"  // default color of the variable name
+	defTextColor  = "white+h" // default color of the text
+	defSepColor   = "white"   // default color of the separator
+	defBodyColor1 = "cyan+h"  // default color of upper body of the logo
+	defBodyColor2 = "cyan"    // default color of lower body of the logo
+	resetColor    = "reset"   // reset color
 )
 
 const archLogo = `
@@ -363,13 +361,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if len(opt.Paths) != 0 {
-		paths := strings.Split(opt.Paths, ",")
 		// if passed paths exceed number of available spots in archLogo
-		if len(paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
+		if len(opt.Paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
 			return nil, ErrExcessivePaths
 		}
 
-		for _, path := range paths {
+		for _, path := range opt.Paths {
 			pathfs := sysinfo.NewFS()
 			if err := pathfs.Get(path); err != nil {
 				return nil, err
@@ -381,7 +378,8 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 				pathfsUsage = fmt.Sprintf("%.1f MB / %.1f MB",
 					pathfs.UsedSpaceInMB(), pathfs.TotalSizeInMB())
 			case "gb":
-				pathfsUsage = fmt.Sprintf("%.1f GB / %.1f GB", pathfs.UsedSpaceInGB(), pathfs.TotalSizeInGB())
+				pathfsUsage = fmt.Sprintf("%.1f GB / %.1f GB",
+					pathfs.UsedSpaceInGB(), pathfs.TotalSizeInGB())
 			default:
 				return nil, ErrInvalidDiskUnit(opt.DiskUnit)
 			}
@@ -406,11 +404,13 @@ func New() *Options {
 		MemoryUnit: defMemoryUnit,
 		DiskUnit:   defDiskUnit,
 		Show: Show{
+			OS:       true,
+			Arch:     true,
+			Kernel:   true,
 			User:     true,
 			Hostname: true,
-			OS:       true,
-			Kernel:   true,
 			Uptime:   true,
+			UpSince:  true,
 			WM:       true,
 			DE:       true,
 			Terminal: true,
