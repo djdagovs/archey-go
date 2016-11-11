@@ -1,0 +1,30 @@
+[show]
+noOS = false
+noArch = false
+noKernel = false
+noUptime = false
+noUpSince = false
+noWM = false
+noDE = false
+noTerminal = false
+noShell = false
+noEditor = false
+noPackages = false
+noMemory = false
+noCPU = false
+noRoot = false
+noHome = false
+
+[options]
+sep = " ->"
+memoryUnit = "mb"
+diskUnit = "gb"
+paths = ["/usr", "/tmp"]
+pathFull = false
+noColor = false
+
+[colors]
+nameColor = "150"
+textColor = "white+h"
+sepColor = "191"
+bodyColor = "69"

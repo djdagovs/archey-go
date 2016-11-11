@@ -6,26 +6,15 @@ import (
 
 	archey "github.com/alectic/archey-go/lib"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
-var confFile string
-
-// Options
 var (
-	sep        string
-	memoryUnit string
-	diskUnit   string
-	paths      []string
-	pathFull   bool
-)
-
-// Show
-var (
-	noUser     bool
-	noHostname bool
 	noOS       bool
 	noArch     bool
 	noKernel   bool
+	noUser     bool
+	noHostname bool
 	noUptime   bool
 	noUpSince  bool
 	noWM       bool
@@ -41,18 +30,29 @@ var (
 )
 
 var (
-	nameColor  string
-	textColor  string
-	sepColor   string
-	bodyColor  string
-	noColor    bool
-	listColors bool
+	nameColor string
+	textColor string
+	sepColor  string
+	bodyColor string
 )
+
+// options
+var (
+	sep        string
+	diskUnit   string
+	memoryUnit string
+	paths      []string
+	pathFull   bool
+	noColor    bool
+)
+
+var listColors bool
+var config string
 
 var RootCmd = &cobra.Command{
 	Use:   "archey-go",
 	Short: "Archey-go is a tool to display prettified system info on Arch Linux",
-	Run: func(cmd *cobra.Command, args []string) {
+	RunE: func(cmd *cobra.Command, args []string) error {
 		if len(args) > 0 {
 			cmd.Help()
 			os.Exit(0)
@@ -60,75 +60,74 @@ var RootCmd = &cobra.Command{
 
 		opt := archey.New()
 
-		opt.Show.OS = noOS
-		opt.Show.Arch = noArch
-		opt.Show.Kernel = noKernel
-		opt.Show.User = noUser
-		opt.Show.Hostname = noHostname
-		opt.Show.Uptime = noUptime
-		opt.Show.UpSince = noUpSince
-		opt.Show.WM = noWM
-		opt.Show.DE = noDE
-		opt.Show.Terminal = noTerminal
-		opt.Show.Shell = noShell
-		opt.Show.Editor = noEditor
-		opt.Show.Packages = noPackages
-		opt.Show.Memory = noMemory
-		opt.Show.CPU = noCPU
-		opt.Show.Root = noRoot
-		opt.Show.Home = noHome
-		opt.PathFull = pathFull
+		opt.Show.OS = viper.GetBool("show.noOS")
+		opt.Show.Arch = viper.GetBool("show.noArch")
+		opt.Show.Kernel = viper.GetBool("show.noKernel")
+		opt.Show.User = viper.GetBool("show.noUser")
+		opt.Show.Hostname = viper.GetBool("show.noHostname")
+		opt.Show.Uptime = viper.GetBool("show.noUptime")
+		opt.Show.UpSince = viper.GetBool("show.noUpSince")
+		opt.Show.WM = viper.GetBool("show.noWM")
+		opt.Show.DE = viper.GetBool("show.noDE")
+		opt.Show.Terminal = viper.GetBool("show.noTerminal")
+		opt.Show.Shell = viper.GetBool("show.noShell")
+		opt.Show.Editor = viper.GetBool("show.noEditor")
+		opt.Show.Packages = viper.GetBool("show.noPackages")
+		opt.Show.Memory = viper.GetBool("show.noMemory")
+		opt.Show.CPU = viper.GetBool("show.noCPU")
+		opt.Show.Root = viper.GetBool("show.noRoot")
+		opt.Show.Home = viper.GetBool("show.noHome")
 
-		if sep != "" {
-			opt.Sep = sep
+		if viper.GetString("options.sep") != "" {
+			opt.Sep = viper.GetString("options.sep")
 		}
 
-		if memoryUnit != "" {
-			opt.MemoryUnit = memoryUnit
+		if viper.GetString("options.memoryUnit") != "" {
+			opt.MemoryUnit = viper.GetString("options.memoryUnit")
 		}
 
-		if diskUnit != "" {
-			opt.DiskUnit = diskUnit
+		if viper.GetString("options.diskUnit") != "" {
+			opt.DiskUnit = viper.GetString("options.diskUnit")
 		}
 
-		if len(paths) != 0 {
-			opt.Paths = paths
+		// NOTE: slice binds to pflag not handled correctly by viper - alectic (10 Nov 2016)
+		opt.Paths = viper.GetStringSlice("options.paths")
+		opt.PathFull = viper.GetBool("options.pathFull")
+
+		if viper.GetString("colors.nameColor") != "" {
+			opt.Colors.Name = viper.GetString("colors.nameColor")
 		}
 
-		if nameColor != "" {
-			opt.Colors.Name = nameColor
+		if viper.GetString("colors.textColor") != "" {
+			opt.Colors.Text = viper.GetString("colors.textColor")
 		}
 
-		if textColor != "" {
-			opt.Colors.Text = textColor
+		if viper.GetString("colors.sepColor") != "" {
+			opt.Colors.Sep = viper.GetString("colors.sepColor")
 		}
 
-		if sepColor != "" {
-			opt.Colors.Sep = sepColor
-		}
-
-		if bodyColor != "" {
-			opt.Colors.Body = bodyColor
+		if viper.GetString("colors.bodyColor") != "" {
+			opt.Colors.Body = viper.GetString("colors.bodyColor")
 		}
 
 		// TODO: implement - alectic (08 Nov 2016)
-		if noColor {
+		if viper.GetBool("options.noColor") {
 			fmt.Println("to be implemented")
 			os.Exit(1)
 		}
 
-		if listColors {
+		if cmd.Flag("list-colors").Changed {
 			archey.ListColors()
 			os.Exit(1)
 		}
 
 		info, err := opt.Render()
 		if err != nil {
-			fmt.Fprintln(os.Stderr, err)
-			os.Exit(1)
+			return err
 		}
 
 		fmt.Println(info)
+		return nil
 	},
 }
 
@@ -150,7 +149,7 @@ func init() {
 	RootCmd.Flags().BoolVar(&noMemory, "no-memory", false, "don't print memory usage")
 	RootCmd.Flags().BoolVar(&noCPU, "no-cpu", false, "don't print CPU model")
 	RootCmd.Flags().BoolVar(&noRoot, "no-root", false, "don't print root disk usage")
-	RootCmd.Flags().BoolVar(&noRoot, "no-home", false, "don't print home disk usage")
+	RootCmd.Flags().BoolVar(&noHome, "no-home", false, "don't print home disk usage")
 	RootCmd.Flags().StringVar(&sep, "sep", "", "separator string")
 	RootCmd.Flags().StringVar(&memoryUnit, "memory-unit", "", "unit to use for memory usage")
 	RootCmd.Flags().StringVar(&diskUnit, "disk-unit", "", "unit to use for disk usage")
@@ -162,8 +161,53 @@ func init() {
 	RootCmd.Flags().StringVar(&bodyColor, "body-color", "", "color of the logo body")
 	RootCmd.Flags().BoolVar(&noColor, "no-color", false, "don't use any colors")
 	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
+	RootCmd.Flags().StringVar(&config, "config", "", "config file")
+
+	viper.BindPFlag("show.noOS", RootCmd.Flags().Lookup("no-os"))
+	viper.BindPFlag("show.noArch", RootCmd.Flags().Lookup("no-arch"))
+	viper.BindPFlag("show.noKernel", RootCmd.Flags().Lookup("no-kernel"))
+	viper.BindPFlag("show.noUser", RootCmd.Flags().Lookup("no-user"))
+	viper.BindPFlag("show.noHostname", RootCmd.Flags().Lookup("no-hostname"))
+	viper.BindPFlag("show.noUptime", RootCmd.Flags().Lookup("no-uptime"))
+	viper.BindPFlag("show.noUpSince", RootCmd.Flags().Lookup("no-up-since"))
+	viper.BindPFlag("show.noWM", RootCmd.Flags().Lookup("no-wm"))
+	viper.BindPFlag("show.noDE", RootCmd.Flags().Lookup("no-de"))
+	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
+	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
+	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))
+	viper.BindPFlag("show.noPackages", RootCmd.Flags().Lookup("no-packages"))
+	viper.BindPFlag("show.noMemory", RootCmd.Flags().Lookup("no-memory"))
+	viper.BindPFlag("show.noCPU", RootCmd.Flags().Lookup("no-cpu"))
+	viper.BindPFlag("show.noRoot", RootCmd.Flags().Lookup("no-root"))
+	viper.BindPFlag("show.noHome", RootCmd.Flags().Lookup("no-home"))
+
+	viper.BindPFlag("options.sep", RootCmd.Flags().Lookup("sep"))
+	viper.BindPFlag("options.memoryUnit", RootCmd.Flags().Lookup("memory-unit"))
+	viper.BindPFlag("options.diskUnit", RootCmd.Flags().Lookup("disk-unit"))
+	viper.BindPFlag("options.paths", RootCmd.Flags().Lookup("paths"))
+	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
+
+	viper.BindPFlag("colors.nameColor", RootCmd.Flags().Lookup("name-color"))
+	viper.BindPFlag("colors.textColor", RootCmd.Flags().Lookup("text-color"))
+	viper.BindPFlag("colors.sepColor", RootCmd.Flags().Lookup("sep-color"))
+	viper.BindPFlag("colors.bodyColor", RootCmd.Flags().Lookup("body-color"))
 }
 
 func initConfig() {
-	/*  */
+	viper.SetConfigType("toml")
+	viper.SetConfigName("config")
+	viper.AddConfigPath(".")
+	viper.AddConfigPath("$HOME/.config/archey-go")
+	viper.AddConfigPath("/etc/archey-go")
+
+	if config != "" {
+		viper.SetConfigFile(config)
+		if err := viper.ReadInConfig(); err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		return
+	}
+
+	viper.ReadInConfig()
 }

@@ -61,8 +61,8 @@ const pacmanDir = "/var/lib/pacman/local"
 // default options
 const (
 	defSep        = ":"         // default separator
-	defDiskUnit   = "gb"        // default unit for printing disk storage
-	defMemoryUnit = defDiskUnit // default unit for printing memory usage
+	defDiskUnit   = "gb"        // default unit for disk usage
+	defMemoryUnit = defDiskUnit // default unit for memory usage
 )
 
 // Name Sep Info
@@ -70,11 +70,11 @@ const infoFormat = "%s%s %s" // eg. OS: Linux
 
 // default info colors
 const (
-	defNameColor  = "cyan+h"  // default color of the variable name
+	defNameColor  = "111"     // default color of the variable name
 	defTextColor  = "white+h" // default color of the text
 	defSepColor   = "white"   // default color of the separator
-	defBodyColor1 = "cyan+h"  // default color of upper body of the logo
-	defBodyColor2 = "cyan"    // default color of lower body of the logo
+	defBodyColor1 = "111"     // default color of upper body of the logo
+	defBodyColor2 = "69"      // default color of lower body of the logo
 	resetColor    = "reset"   // reset color
 )
 
@@ -88,7 +88,7 @@ const archLogo = `
             {{.bCol1}}##############{{.reset}}              {{.info6}}
            {{.bCol1}}################{{.reset}}             {{.info7}}
           {{.bCol1}}##################{{.reset}}            {{.info8}}
-         {{.bCol1}}###########{{.bCol2}}######{{.bCol1}}###{{.reset}}           {{.info9}}
+         {{.bCol1}}#########{{.bCol2}}########{{.bCol1}}###{{.reset}}           {{.info9}}
         {{.bCol1}}###{{.bCol2}}#################{{.bCol1}}##{{.reset}}          {{.info10}}
        {{.bCol1}}##{{.bCol2}}#######{{.reset}}      {{.bCol2}}#########{{.reset}}         {{.info11}}
       {{.bCol2}}########;{{.reset}}        {{.bCol2}};########{{.reset}}        {{.info12}}
@@ -361,12 +361,29 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if len(opt.Paths) != 0 {
+		// NOTE: fix to viper's slice bind handling problem - alectic (10 Nov 2016)
+		paths := func() []string {
+			var sl []string
+			// if theres more than one path string in the slice
+			if len(opt.Paths) > 1 {
+				// iterate over each path
+				for _, path := range opt.Paths {
+					// append it
+					sl = append(sl, path)
+				}
+			} else {
+				// otherwhise split the first and only path string
+				sl = strings.Split(opt.Paths[0], ",")
+			}
+			return sl
+		}()
+
 		// if passed paths exceed number of available spots in archLogo
-		if len(opt.Paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
+		if len(paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
 			return nil, ErrExcessivePaths
 		}
 
-		for _, path := range opt.Paths {
+		for _, path := range paths {
 			pathfs := sysinfo.NewFS()
 			if err := pathfs.Get(path); err != nil {
 				return nil, err
