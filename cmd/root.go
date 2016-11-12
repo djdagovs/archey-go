@@ -43,6 +43,7 @@ var (
 	memoryUnit string
 	paths      []string
 	pathFull   bool
+	shellFull  bool
 	noColor    bool
 )
 
@@ -93,6 +94,7 @@ var RootCmd = &cobra.Command{
 		// NOTE: slice binds to pflag not handled correctly by viper - alexdreptu (10 Nov 2016)
 		opt.Paths = viper.GetStringSlice("options.paths")
 		opt.PathFull = viper.GetBool("options.pathFull")
+		opt.ShellFull = viper.GetBool("options.shellFull")
 
 		if viper.GetString("colors.nameColor") != "" {
 			opt.Colors.Name = viper.GetString("colors.nameColor")
@@ -155,6 +157,7 @@ func init() {
 	RootCmd.Flags().StringVar(&diskUnit, "disk-unit", "", "unit to use for disk usage")
 	RootCmd.Flags().StringSliceVar(&paths, "paths", nil, "additional paths to add to disk usage info")
 	RootCmd.Flags().BoolVar(&pathFull, "path-full", false, "show full paths")
+	RootCmd.Flags().BoolVar(&shellFull, "shell-full", false, "print shell's full path instead of its name")
 	RootCmd.Flags().StringVar(&nameColor, "name-color", "", "color of the variable name")
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
@@ -186,6 +189,7 @@ func init() {
 	viper.BindPFlag("options.diskUnit", RootCmd.Flags().Lookup("disk-unit"))
 	viper.BindPFlag("options.paths", RootCmd.Flags().Lookup("paths"))
 	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
+	viper.BindPFlag("options.shellFull", RootCmd.Flags().Lookup("shell-full"))
 
 	viper.BindPFlag("colors.nameColor", RootCmd.Flags().Lookup("name-color"))
 	viper.BindPFlag("colors.textColor", RootCmd.Flags().Lookup("text-color"))

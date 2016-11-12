@@ -51,6 +51,7 @@ type Options struct {
 	MemoryUnit string
 	Paths      []string
 	PathFull   bool
+	ShellFull  bool
 	Show       Show
 	Colors     Colors
 }
@@ -247,8 +248,16 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Shell {
+		var shell string
+
+		if opt.ShellFull {
+			shell = os.Getenv("SHELL")
+		} else {
+			shell = strings.ToUpper(filepath.Base(os.Getenv("SHELL")))
+		}
+
 		shellFormat := fmt.Sprintf(infoFormat,
-			nameColor("Shell"), sepColor(opt.Sep), textColor(os.Getenv("SHELL")))
+			nameColor("Shell"), sepColor(opt.Sep), textColor(shell))
 		info = append(info, shellFormat)
 	}
 
