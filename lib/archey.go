@@ -429,6 +429,8 @@ func New() *Options {
 		Sep:        defSep,
 		MemoryUnit: defMemoryUnit,
 		DiskUnit:   defDiskUnit,
+		PathFull:   false,
+		ShellFull:  false,
 		Show: Show{
 			OS:       true,
 			Arch:     true,

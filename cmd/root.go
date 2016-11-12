@@ -202,6 +202,7 @@ func initConfig() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath(".")
 	viper.AddConfigPath("$HOME/.config/archey-go")
+	viper.AddConfigPath("$HOME/.archey-go")
 	viper.AddConfigPath("/etc/archey-go")
 
 	if config != "" {

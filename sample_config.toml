@@ -21,6 +21,7 @@ memoryUnit = "mb"
 diskUnit = "gb"
 paths = ["/usr", "/tmp"]
 pathFull = false
+shellFull = true
 noColor = false
 
 [colors]
