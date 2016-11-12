@@ -33,6 +33,7 @@ type Show struct {
 	Editor   bool
 	Packages bool
 	Memory   bool
+	Swap     bool
 	CPU      bool
 	Root     bool
 	Home     bool
@@ -49,6 +50,7 @@ type Options struct {
 	Sep        string
 	DiskUnit   string
 	MemoryUnit string
+	SwapUnit   string
 	Paths      []string
 	PathFull   bool
 	ShellFull  bool
@@ -64,6 +66,7 @@ const (
 	defSep        = ":"         // default separator
 	defDiskUnit   = "gb"        // default unit for disk usage
 	defMemoryUnit = defDiskUnit // default unit for memory usage
+	defSwapUnit   = defMemoryUnit
 )
 
 // Name Sep Info
@@ -104,6 +107,9 @@ const archLogo = `
 var (
 	ErrInvalidMemUnit = func(u string) error {
 		return fmt.Errorf("invalid memory unit '%s'", u)
+	}
+	ErrInvalidSwapUnit = func(u string) error {
+		return fmt.Errorf("invalid swap unit '%s'", u)
 	}
 	ErrInvalidDiskUnit = func(u string) error {
 		return fmt.Errorf("invalid disk unit '%s'", u)
@@ -279,12 +285,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, packagesFormat)
 	}
 
-	if !opt.Show.Memory {
-		mem := sysinfo.NewMem()
-		if err := mem.Get(); err != nil {
-			return nil, err
-		}
+	mem := sysinfo.NewMem()
+	if err := mem.Get(); err != nil {
+		return nil, err
+	}
 
+	if !opt.Show.Memory {
 		var memUsage string
 		switch strings.ToLower(opt.MemoryUnit) {
 		case "mb":
@@ -300,6 +306,24 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		memoryFormat := fmt.Sprintf(infoFormat,
 			nameColor("Memory"), sepColor(opt.Sep), textColor(memUsage))
 		info = append(info, memoryFormat)
+	}
+
+	if !opt.Show.Swap {
+		var swapUsage string
+		switch strings.ToLower(opt.SwapUnit) {
+		case "mb":
+			swapUsage = fmt.Sprintf("%.1f MB / %.1f MB",
+				mem.UsedSwapInMB(), mem.TotalSwapInMB())
+		case "gb":
+			swapUsage = fmt.Sprintf("%.1f GB / %.1f GB",
+				mem.UsedSwapInGB(), mem.TotalSwapInGB())
+		default:
+			return nil, ErrInvalidSwapUnit(opt.SwapUnit)
+		}
+
+		swapFormat := fmt.Sprintf(infoFormat,
+			nameColor("Swap"), sepColor(opt.Sep), textColor(swapUsage))
+		info = append(info, swapFormat)
 	}
 
 	if !opt.Show.CPU {
@@ -428,6 +452,7 @@ func New() *Options {
 	return &Options{
 		Sep:        defSep,
 		MemoryUnit: defMemoryUnit,
+		SwapUnit:   defSwapUnit,
 		DiskUnit:   defDiskUnit,
 		PathFull:   false,
 		ShellFull:  false,

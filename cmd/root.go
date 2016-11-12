@@ -24,6 +24,7 @@ var (
 	noEditor   bool
 	noPackages bool
 	noMemory   bool
+	noSwap     bool
 	noCPU      bool
 	noRoot     bool
 	noHome     bool
@@ -41,6 +42,7 @@ var (
 	sep        string
 	diskUnit   string
 	memoryUnit string
+	swapUnit   string
 	paths      []string
 	pathFull   bool
 	shellFull  bool
@@ -75,6 +77,7 @@ var RootCmd = &cobra.Command{
 		opt.Show.Editor = viper.GetBool("show.noEditor")
 		opt.Show.Packages = viper.GetBool("show.noPackages")
 		opt.Show.Memory = viper.GetBool("show.noMemory")
+		opt.Show.Swap = viper.GetBool("show.noSwap")
 		opt.Show.CPU = viper.GetBool("show.noCPU")
 		opt.Show.Root = viper.GetBool("show.noRoot")
 		opt.Show.Home = viper.GetBool("show.noHome")
@@ -85,6 +88,10 @@ var RootCmd = &cobra.Command{
 
 		if viper.GetString("options.memoryUnit") != "" {
 			opt.MemoryUnit = viper.GetString("options.memoryUnit")
+		}
+
+		if viper.GetString("options.swapUnit") != "" {
+			opt.SwapUnit = viper.GetString("options.swapUnit")
 		}
 
 		if viper.GetString("options.diskUnit") != "" {
@@ -149,11 +156,13 @@ func init() {
 	RootCmd.Flags().BoolVar(&noEditor, "no-editor", false, "don't print editor name")
 	RootCmd.Flags().BoolVar(&noPackages, "no-packages", false, "don't print packages count")
 	RootCmd.Flags().BoolVar(&noMemory, "no-memory", false, "don't print memory usage")
+	RootCmd.Flags().BoolVar(&noSwap, "no-swap", false, "don't print swap usage")
 	RootCmd.Flags().BoolVar(&noCPU, "no-cpu", false, "don't print CPU model")
 	RootCmd.Flags().BoolVar(&noRoot, "no-root", false, "don't print root disk usage")
 	RootCmd.Flags().BoolVar(&noHome, "no-home", false, "don't print home disk usage")
 	RootCmd.Flags().StringVar(&sep, "sep", "", "separator string")
 	RootCmd.Flags().StringVar(&memoryUnit, "memory-unit", "", "unit to use for memory usage")
+	RootCmd.Flags().StringVar(&swapUnit, "swap-unit", "", "unit to use for swap usage")
 	RootCmd.Flags().StringVar(&diskUnit, "disk-unit", "", "unit to use for disk usage")
 	RootCmd.Flags().StringSliceVar(&paths, "paths", nil, "additional paths to add to disk usage info")
 	RootCmd.Flags().BoolVar(&pathFull, "path-full", false, "show full paths")
@@ -180,12 +189,14 @@ func init() {
 	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))
 	viper.BindPFlag("show.noPackages", RootCmd.Flags().Lookup("no-packages"))
 	viper.BindPFlag("show.noMemory", RootCmd.Flags().Lookup("no-memory"))
+	viper.BindPFlag("show.noSwap", RootCmd.Flags().Lookup("no-swap"))
 	viper.BindPFlag("show.noCPU", RootCmd.Flags().Lookup("no-cpu"))
 	viper.BindPFlag("show.noRoot", RootCmd.Flags().Lookup("no-root"))
 	viper.BindPFlag("show.noHome", RootCmd.Flags().Lookup("no-home"))
 
 	viper.BindPFlag("options.sep", RootCmd.Flags().Lookup("sep"))
 	viper.BindPFlag("options.memoryUnit", RootCmd.Flags().Lookup("memory-unit"))
+	viper.BindPFlag("options.swapUnit", RootCmd.Flags().Lookup("swap-unit"))
 	viper.BindPFlag("options.diskUnit", RootCmd.Flags().Lookup("disk-unit"))
 	viper.BindPFlag("options.paths", RootCmd.Flags().Lookup("paths"))
 	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
