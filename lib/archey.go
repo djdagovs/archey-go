@@ -11,8 +11,8 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/alectic/sysinfo"
-	utils "github.com/alectic/utils-go"
+	"github.com/alexdreptu/sysinfo"
+	utils "github.com/alexdreptu/utils-go"
 	"github.com/mgutz/ansi"
 )
 
@@ -361,7 +361,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if len(opt.Paths) != 0 {
-		// NOTE: fix to viper's slice bind handling problem - alectic (10 Nov 2016)
+		// NOTE: fix to viper's slice bind handling problem - alexdreptu (10 Nov 2016)
 		paths := func() []string {
 			var sl []string
 			// if theres more than one path string in the slice

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/alectic/archey-go/cmd"
+	"github.com/alexdreptu/archey-go/cmd"
 )
 
 func main() {

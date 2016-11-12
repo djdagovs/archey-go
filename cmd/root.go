@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	archey "github.com/alectic/archey-go/lib"
+	archey "github.com/alexdreptu/archey-go/lib"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -90,7 +90,7 @@ var RootCmd = &cobra.Command{
 			opt.DiskUnit = viper.GetString("options.diskUnit")
 		}
 
-		// NOTE: slice binds to pflag not handled correctly by viper - alectic (10 Nov 2016)
+		// NOTE: slice binds to pflag not handled correctly by viper - alexdreptu (10 Nov 2016)
 		opt.Paths = viper.GetStringSlice("options.paths")
 		opt.PathFull = viper.GetBool("options.pathFull")
 
@@ -110,7 +110,7 @@ var RootCmd = &cobra.Command{
 			opt.Colors.Body = viper.GetString("colors.bodyColor")
 		}
 
-		// TODO: implement - alectic (08 Nov 2016)
+		// TODO: implement - alexdreptu (08 Nov 2016)
 		if viper.GetBool("options.noColor") {
 			fmt.Println("to be implemented")
 			os.Exit(1)

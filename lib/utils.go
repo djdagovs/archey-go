@@ -1,7 +1,7 @@
 package archey
 
 import (
-	utils "github.com/alectic/utils-go"
+	utils "github.com/alexdreptu/utils-go"
 	"github.com/mgutz/ansi"
 )
 
