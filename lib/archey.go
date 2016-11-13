@@ -2,7 +2,6 @@ package archey
 
 import (
 	"bytes"
-	"errors"
 	"fmt"
 	"os"
 	"os/user"
@@ -104,8 +103,7 @@ const archLogo = `
    {{.bCol2}}#######{{.reset}}                  {{.bCol2}}#######{{.reset}}       {{.info15}}
   {{.bCol2}}#####{{.reset}}                        {{.bCol2}}#####{{.reset}}      {{.info16}}
  {{.bCol2}}###{{.reset}}                              {{.bCol2}}###{{.reset}}     {{.info17}}
-{{.bCol2}}##{{.reset}}                                  {{.bCol2}}##{{.reset}}    {{.info18}}
-`
+{{.bCol2}}##{{.reset}}                                  {{.bCol2}}##{{.reset}}    {{.info18}}`
 
 var (
 	ErrInvalidMemUnit = func(u string) error {
@@ -117,37 +115,18 @@ var (
 	ErrInvalidDiskUnit = func(u string) error {
 		return fmt.Errorf("invalid disk unit '%s'", u)
 	}
-	ErrExcessivePaths = errors.New("excessive number of paths")
 )
 
 func (o *Options) Render() (string, error) {
-	data, err := getData(o)
+	info, err := getFormattedInfo(o)
 	if err != nil {
 		return "", err
-	}
-
-	t, err := template.New("Arch Logo").Parse(archLogo)
-	if err != nil {
-		return "", err
-	}
-
-	var buf bytes.Buffer
-	if err = t.Execute(&buf, data); err != nil {
-		return "", err
-	}
-	return buf.String(), nil
-}
-
-func getData(opt *Options) (map[string]string, error) {
-	info, err := getFormattedInfo(opt)
-	if err != nil {
-		return nil, err
 	}
 
 	var bCol1 string
 	var bCol2 string
-	if opt.Colors.Body != "" {
-		bCol1 = ansi.ColorCode(opt.Colors.Body)
+	if o.Colors.Body != "" {
+		bCol1 = ansi.ColorCode(o.Colors.Body)
 		bCol2 = bCol1
 	} else {
 		bCol1 = ansi.ColorCode(defBodyColor1)
@@ -160,18 +139,53 @@ func getData(opt *Options) (map[string]string, error) {
 		"reset": ansi.ColorCode(resetColor),
 	}
 
-	logoLength := len(strings.Split(archLogo, "\n")) - 1
-	for i := 0; i < logoLength; i++ {
+	logoSize := len(strings.Split(archLogo, "\n")) - 1
+
+	// create the info spots for logo
+	// and set each to empty string
+	for i := 0; i < logoSize; i++ {
 		key := "info" + strconv.Itoa(i)
 		data[key] = ""
 	}
 
+	// fill each info spot with formatted info
 	for i, v := range info {
 		key := "info" + strconv.Itoa(i)
 		data[key] = v
 	}
 
-	return data, nil
+	var dataCount int
+	for k, _ := range data {
+		if strings.HasPrefix(k, "info") {
+			dataCount++
+		}
+	}
+
+	// create a slice and add the content of archLogo
+	// to be able to extend it as necessary
+	logo := []string{archLogo}
+
+	if dataCount > logoSize {
+		for i := logoSize; i < dataCount; i++ {
+			infon := fmt.Sprintf("{{.info%s}}", strconv.Itoa(i))
+			logo = append(logo, "\t\t\t\t\t  "+infon)
+		}
+	}
+
+	// always append one empty line at the end of the info
+	logo = append(logo, "")
+
+	t, err := template.New("Arch Logo").Parse(strings.Join(logo, "\n"))
+	if err != nil {
+		return "", err
+	}
+
+	var buf bytes.Buffer
+	if err = t.Execute(&buf, data); err != nil {
+		return "", err
+	}
+
+	return buf.String(), nil
 }
 
 func getFormattedInfo(opt *Options) ([]string, error) {
@@ -262,6 +276,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		gtkIconsFormat := fmt.Sprintf(infoFormat,
 			nameColor("GTK2 Icon Theme"), sepColor(opt.Sep), textColor(gtk2.Icons))
 		info = append(info, gtkIconsFormat)
+	}
+
+	if !opt.Show.GTK2Font {
+		gtkFontFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK2 Font"), sepColor(opt.Sep), textColor(gtk2.Font))
+		info = append(info, gtkFontFormat)
 	}
 
 	if !opt.Show.Terminal {
@@ -427,11 +447,6 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 			}
 			return sl
 		}()
-
-		// if passed paths exceed number of available spots in archLogo
-		if len(paths) > (len(strings.Split(archLogo, "\n"))-2)-len(info) {
-			return nil, ErrExcessivePaths
-		}
 
 		for _, path := range paths {
 			pathfs := sysinfo.NewFS()
