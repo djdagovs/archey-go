@@ -19,24 +19,27 @@ import (
 type info map[string]string
 
 type Show struct {
-	OS       bool
-	Arch     bool
-	Kernel   bool
-	User     bool
-	Hostname bool
-	Uptime   bool
-	UpSince  bool
-	WM       bool
-	DE       bool
-	Terminal bool
-	Shell    bool
-	Editor   bool
-	Packages bool
-	Memory   bool
-	Swap     bool
-	CPU      bool
-	Root     bool
-	Home     bool
+	OS        bool
+	Arch      bool
+	Kernel    bool
+	User      bool
+	Hostname  bool
+	Uptime    bool
+	UpSince   bool
+	WM        bool
+	DE        bool
+	GTK2Theme bool
+	GTK2Icons bool
+	GTK2Font  bool
+	Terminal  bool
+	Shell     bool
+	Editor    bool
+	Packages  bool
+	Memory    bool
+	Swap      bool
+	CPU       bool
+	Root      bool
+	Home      bool
 }
 
 type Colors struct {
@@ -83,25 +86,25 @@ const (
 )
 
 const archLogo = `
-                  {{.bCol1}}##{{.reset}}                    {{.info0}}
-                 {{.bCol1}}####{{.reset}}                   {{.info1}}
-                {{.bCol1}}######{{.reset}}                  {{.info2}}
-               {{.bCol1}}########{{.reset}}                 {{.info3}}
-              {{.bCol1}}##########{{.reset}}                {{.info4}}
-             {{.bCol1}}############{{.reset}}               {{.info5}}
-            {{.bCol1}}##############{{.reset}}              {{.info6}}
-           {{.bCol1}}################{{.reset}}             {{.info7}}
-          {{.bCol1}}##################{{.reset}}            {{.info8}}
-         {{.bCol1}}#########{{.bCol2}}########{{.bCol1}}###{{.reset}}           {{.info9}}
-        {{.bCol1}}###{{.bCol2}}#################{{.bCol1}}##{{.reset}}          {{.info10}}
-       {{.bCol1}}##{{.bCol2}}#######{{.reset}}      {{.bCol2}}#########{{.reset}}         {{.info11}}
-      {{.bCol2}}########;{{.reset}}        {{.bCol2}};########{{.reset}}        {{.info12}}
-     {{.bCol2}}########;{{.reset}}          {{.bCol2}};########{{.reset}}       {{.info13}}
-    {{.bCol2}}##########.{{.reset}}        {{.bCol2}}.##########{{.reset}}      {{.info14}}
-   {{.bCol2}}#######{{.reset}}                  {{.bCol2}}#######{{.reset}}     {{.info15}}
-  {{.bCol2}}#####{{.reset}}                        {{.bCol2}}#####{{.reset}}    {{.info16}}
- {{.bCol2}}###{{.reset}}                              {{.bCol2}}###{{.reset}}   {{.info17}}
-{{.bCol2}}##{{.reset}}                                  {{.bCol2}}##{{.reset}}  {{.info18}}
+                  {{.bCol1}}##{{.reset}}                      {{.info0}}
+                 {{.bCol1}}####{{.reset}}                     {{.info1}}
+                {{.bCol1}}######{{.reset}}                    {{.info2}}
+               {{.bCol1}}########{{.reset}}                   {{.info3}}
+              {{.bCol1}}##########{{.reset}}                  {{.info4}}
+             {{.bCol1}}############{{.reset}}                 {{.info5}}
+            {{.bCol1}}##############{{.reset}}                {{.info6}}
+           {{.bCol1}}################{{.reset}}               {{.info7}}
+          {{.bCol1}}##################{{.reset}}              {{.info8}}
+         {{.bCol1}}#########{{.bCol2}}########{{.bCol1}}###{{.reset}}             {{.info9}}
+        {{.bCol1}}###{{.bCol2}}#################{{.bCol1}}##{{.reset}}            {{.info10}}
+       {{.bCol1}}##{{.bCol2}}#######{{.reset}}      {{.bCol2}}#########{{.reset}}           {{.info11}}
+      {{.bCol2}}########;{{.reset}}        {{.bCol2}};########{{.reset}}          {{.info12}}
+     {{.bCol2}}########;{{.reset}}          {{.bCol2}};########{{.reset}}         {{.info13}}
+    {{.bCol2}}##########.{{.reset}}        {{.bCol2}}.##########{{.reset}}        {{.info14}}
+   {{.bCol2}}#######{{.reset}}                  {{.bCol2}}#######{{.reset}}       {{.info15}}
+  {{.bCol2}}#####{{.reset}}                        {{.bCol2}}#####{{.reset}}      {{.info16}}
+ {{.bCol2}}###{{.reset}}                              {{.bCol2}}###{{.reset}}     {{.info17}}
+{{.bCol2}}##{{.reset}}                                  {{.bCol2}}##{{.reset}}    {{.info18}}
 `
 
 var (
@@ -237,14 +240,28 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if !opt.Show.WM {
 		wmFormat := fmt.Sprintf(infoFormat,
-			nameColor("Window Manager"), sepColor(opt.Sep), textColor(getWM()))
+			nameColor("Window Manager"), sepColor(opt.Sep), textColor(GetWM()))
 		info = append(info, wmFormat)
 	}
 
 	if !opt.Show.DE {
 		deFormat := fmt.Sprintf(infoFormat,
-			nameColor("Desktop Environment"), sepColor(opt.Sep), textColor(getDE()))
+			nameColor("Desktop Environment"), sepColor(opt.Sep), textColor(GetDE()))
 		info = append(info, deFormat)
+	}
+
+	gtk2 := GetGTK2Info()
+
+	if !opt.Show.GTK2Theme {
+		gtkThemeFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK2 Theme"), sepColor(opt.Sep), textColor(gtk2.Theme))
+		info = append(info, gtkThemeFormat)
+	}
+
+	if !opt.Show.GTK2Icons {
+		gtkIconsFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK2 Icon Theme"), sepColor(opt.Sep), textColor(gtk2.Icons))
+		info = append(info, gtkIconsFormat)
 	}
 
 	if !opt.Show.Terminal {
@@ -457,23 +474,26 @@ func New() *Options {
 		PathFull:   false,
 		ShellFull:  false,
 		Show: Show{
-			OS:       true,
-			Arch:     true,
-			Kernel:   true,
-			User:     true,
-			Hostname: true,
-			Uptime:   true,
-			UpSince:  true,
-			WM:       true,
-			DE:       true,
-			Terminal: true,
-			Shell:    true,
-			Editor:   true,
-			Packages: true,
-			Memory:   true,
-			CPU:      true,
-			Root:     true,
-			Home:     true,
+			OS:        true,
+			Arch:      true,
+			Kernel:    true,
+			User:      true,
+			Hostname:  true,
+			Uptime:    true,
+			UpSince:   true,
+			WM:        true,
+			DE:        true,
+			GTK2Theme: true,
+			GTK2Icons: true,
+			GTK2Font:  true,
+			Terminal:  true,
+			Shell:     true,
+			Editor:    true,
+			Packages:  true,
+			Memory:    true,
+			CPU:       true,
+			Root:      true,
+			Home:      true,
 		},
 		Colors: Colors{
 			Name: defNameColor,

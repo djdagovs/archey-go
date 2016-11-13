@@ -10,24 +10,27 @@ import (
 )
 
 var (
-	noOS       bool
-	noArch     bool
-	noKernel   bool
-	noUser     bool
-	noHostname bool
-	noUptime   bool
-	noUpSince  bool
-	noWM       bool
-	noDE       bool
-	noTerminal bool
-	noShell    bool
-	noEditor   bool
-	noPackages bool
-	noMemory   bool
-	noSwap     bool
-	noCPU      bool
-	noRoot     bool
-	noHome     bool
+	noOS        bool
+	noArch      bool
+	noKernel    bool
+	noUser      bool
+	noHostname  bool
+	noUptime    bool
+	noUpSince   bool
+	noWM        bool
+	noDE        bool
+	noGTK2Theme bool
+	noGTK2Icons bool
+	noGTK2Font  bool
+	noTerminal  bool
+	noShell     bool
+	noEditor    bool
+	noPackages  bool
+	noMemory    bool
+	noSwap      bool
+	noCPU       bool
+	noRoot      bool
+	noHome      bool
 )
 
 var (
@@ -72,6 +75,9 @@ var RootCmd = &cobra.Command{
 		opt.Show.UpSince = viper.GetBool("show.noUpSince")
 		opt.Show.WM = viper.GetBool("show.noWM")
 		opt.Show.DE = viper.GetBool("show.noDE")
+		opt.Show.GTK2Theme = viper.GetBool("show.noGTK2Theme")
+		opt.Show.GTK2Icons = viper.GetBool("show.noGTK2Icons")
+		opt.Show.GTK2Font = viper.GetBool("show.noGTK2Font")
 		opt.Show.Terminal = viper.GetBool("show.noTerminal")
 		opt.Show.Shell = viper.GetBool("show.noShell")
 		opt.Show.Editor = viper.GetBool("show.noEditor")
@@ -151,6 +157,9 @@ func init() {
 	RootCmd.Flags().BoolVar(&noUpSince, "no-up-since", false, "don't print up since")
 	RootCmd.Flags().BoolVar(&noWM, "no-wm", false, "don't print Window Manager name")
 	RootCmd.Flags().BoolVar(&noDE, "no-de", false, "don't print Desktop Environment name")
+	RootCmd.Flags().BoolVar(&noGTK2Theme, "no-gtk2-theme", false, "don't print GTK2 theme name")
+	RootCmd.Flags().BoolVar(&noGTK2Icons, "no-gtk2-icons", false, "don't print GTK2 icons theme name")
+	RootCmd.Flags().BoolVar(&noGTK2Font, "no-gtk2-font", false, "don't print GTK2 font name")
 	RootCmd.Flags().BoolVar(&noTerminal, "no-terminal", false, "don't print terminal name")
 	RootCmd.Flags().BoolVar(&noShell, "no-shell", false, "don't print shell name")
 	RootCmd.Flags().BoolVar(&noEditor, "no-editor", false, "don't print editor name")
@@ -184,6 +193,9 @@ func init() {
 	viper.BindPFlag("show.noUpSince", RootCmd.Flags().Lookup("no-up-since"))
 	viper.BindPFlag("show.noWM", RootCmd.Flags().Lookup("no-wm"))
 	viper.BindPFlag("show.noDE", RootCmd.Flags().Lookup("no-de"))
+	viper.BindPFlag("show.noGTK2Theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
+	viper.BindPFlag("show.noGTK2Icons", RootCmd.Flags().Lookup("no-gtk2-icons"))
+	viper.BindPFlag("show.noGTK2Font", RootCmd.Flags().Lookup("no-gtk2-font"))
 	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
 	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
 	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))

@@ -1,11 +1,22 @@
 package archey
 
 import (
+	"bufio"
+	"os"
+	"path/filepath"
+	"strings"
+
 	utils "github.com/alexdreptu/utils-go"
 	"github.com/mgutz/ansi"
 )
 
-func getWM() string {
+type GTK2 struct {
+	Theme string
+	Icons string
+	Font  string
+}
+
+func GetWM() string {
 	var wm = "None"
 	wmList := map[string]string{
 		"awesome":       "Awesome",
@@ -45,7 +56,7 @@ func getWM() string {
 	return wm
 }
 
-func getDE() string {
+func GetDE() string {
 	de := "None"
 	deList := map[string]string{
 		"cinnamon":      "Cinnamon",
@@ -64,6 +75,50 @@ func getDE() string {
 	}
 
 	return de
+}
+
+func GetGTK2Info() GTK2 {
+	gtk2 := GTK2{}
+	gtk2.Theme = "None"
+	gtk2.Icons = "None"
+	gtk2.Font = "None"
+
+	gtkrc := filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
+	file, err := os.Open(gtkrc)
+	if err != nil {
+		return gtk2
+	}
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		if line == "" {
+			continue
+		}
+
+		if !strings.HasPrefix(line, "gtk") {
+			continue
+		}
+
+		fields := strings.Split(line, "=")
+		key := fields[0]
+		value := strings.Trim(fields[1], "\"")
+
+		switch key {
+		case "gtk-theme-name":
+			gtk2.Theme = value
+		case "gtk-icon-theme-name":
+			gtk2.Icons = value
+		case "gtk-font-name":
+			gtk2.Font = value
+		}
+	}
+
+	if err := scanner.Err(); err != nil {
+		return gtk2
+	}
+
+	return gtk2
 }
 
 func ListColors() {
