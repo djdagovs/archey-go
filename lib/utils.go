@@ -10,12 +10,6 @@ import (
 	"github.com/mgutz/ansi"
 )
 
-type GTK2 struct {
-	Theme string
-	Icons string
-	Font  string
-}
-
 func GetWM() string {
 	var wm = "None"
 	wmList := map[string]string{
@@ -77,11 +71,14 @@ func GetDE() string {
 	return de
 }
 
-func GetGTK2Info() GTK2 {
-	gtk2 := GTK2{}
-	gtk2.Theme = "None"
-	gtk2.Icons = "None"
-	gtk2.Font = "None"
+func GetGTK2Info() struct{ Theme, Icons, Font string } {
+	gtk2 := struct {
+		Theme, Icons, Font string
+	}{
+		Theme: "None",
+		Icons: "None",
+		Font:  "None",
+	}
 
 	gtkrc := filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
 	file, err := os.Open(gtkrc)
