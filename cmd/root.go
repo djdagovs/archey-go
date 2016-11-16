@@ -22,6 +22,9 @@ var (
 	noGTK2Theme bool
 	noGTK2Icons bool
 	noGTK2Font  bool
+	noGTK3Theme bool
+	noGTK3Icons bool
+	noGTK3Font  bool
 	noTerminal  bool
 	noShell     bool
 	noEditor    bool
@@ -78,6 +81,9 @@ var RootCmd = &cobra.Command{
 		opt.Show.GTK2Theme = viper.GetBool("show.noGTK2Theme")
 		opt.Show.GTK2Icons = viper.GetBool("show.noGTK2Icons")
 		opt.Show.GTK2Font = viper.GetBool("show.noGTK2Font")
+		opt.Show.GTK3Theme = viper.GetBool("show.noGTK3Theme")
+		opt.Show.GTK3Icons = viper.GetBool("show.noGTK3Icons")
+		opt.Show.GTK3Font = viper.GetBool("show.noGTK3Font")
 		opt.Show.Terminal = viper.GetBool("show.noTerminal")
 		opt.Show.Shell = viper.GetBool("show.noShell")
 		opt.Show.Editor = viper.GetBool("show.noEditor")
@@ -160,6 +166,9 @@ func init() {
 	RootCmd.Flags().BoolVar(&noGTK2Theme, "no-gtk2-theme", false, "don't print GTK2 theme name")
 	RootCmd.Flags().BoolVar(&noGTK2Icons, "no-gtk2-icons", false, "don't print GTK2 icons theme name")
 	RootCmd.Flags().BoolVar(&noGTK2Font, "no-gtk2-font", false, "don't print GTK2 font name")
+	RootCmd.Flags().BoolVar(&noGTK3Theme, "no-gtk3-theme", false, "don't print GTK3 theme name")
+	RootCmd.Flags().BoolVar(&noGTK3Icons, "no-gtk3-icons", false, "don't print GTK3 icons theme name")
+	RootCmd.Flags().BoolVar(&noGTK3Font, "no-gtk3-font", false, "don't print GTK3 font name")
 	RootCmd.Flags().BoolVar(&noTerminal, "no-terminal", false, "don't print terminal name")
 	RootCmd.Flags().BoolVar(&noShell, "no-shell", false, "don't print shell name")
 	RootCmd.Flags().BoolVar(&noEditor, "no-editor", false, "don't print editor name")
@@ -196,6 +205,9 @@ func init() {
 	viper.BindPFlag("show.noGTK2Theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
 	viper.BindPFlag("show.noGTK2Icons", RootCmd.Flags().Lookup("no-gtk2-icons"))
 	viper.BindPFlag("show.noGTK2Font", RootCmd.Flags().Lookup("no-gtk2-font"))
+	viper.BindPFlag("show.noGTK3Theme", RootCmd.Flags().Lookup("no-gtk3-theme"))
+	viper.BindPFlag("show.noGTK3Icons", RootCmd.Flags().Lookup("no-gtk3-icons"))
+	viper.BindPFlag("show.noGTK3Font", RootCmd.Flags().Lookup("no-gtk3-font"))
 	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
 	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
 	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))

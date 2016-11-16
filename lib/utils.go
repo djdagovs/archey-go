@@ -3,7 +3,6 @@ package archey
 import (
 	"bufio"
 	"os"
-	"path/filepath"
 	"strings"
 
 	utils "github.com/alexdreptu/utils-go"
@@ -71,7 +70,7 @@ func GetDE() string {
 	return de
 }
 
-func GetGTK2Info() struct{ Theme, Icons, Font string } {
+func GetGTKInfo(f string) struct{ Theme, Icons, Font string } {
 	gtk2 := struct {
 		Theme, Icons, Font string
 	}{
@@ -80,8 +79,7 @@ func GetGTK2Info() struct{ Theme, Icons, Font string } {
 		Font:  "None",
 	}
 
-	gtkrc := filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
-	file, err := os.Open(gtkrc)
+	file, err := os.Open(f)
 	if err != nil {
 		return gtk2
 	}

@@ -30,6 +30,9 @@ type Show struct {
 	GTK2Theme bool
 	GTK2Icons bool
 	GTK2Font  bool
+	GTK3Theme bool
+	GTK3Icons bool
+	GTK3Font  bool
 	Terminal  bool
 	Shell     bool
 	Editor    bool
@@ -117,6 +120,9 @@ var (
 	}
 )
 
+var gtkrc2 = filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
+var gtkrc3 = filepath.Join(os.Getenv("HOME"), ".config/gtk-3.0/settings.ini")
+
 func (o *Options) Render() (string, error) {
 	info, err := getFormattedInfo(o)
 	if err != nil {
@@ -197,7 +203,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	// hold the info format lines
 	info := []string{}
 
-	node := sysinfo.NewNode()
+	node := sysinfo.Node{}
 	if err := node.Get(); err != nil {
 		return nil, err
 	}
@@ -235,7 +241,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, hostnameFormat)
 	}
 
-	up := sysinfo.NewUptime()
+	up := sysinfo.Uptime{}
 	if err := up.Get(); err != nil {
 		return nil, err
 	}
@@ -264,7 +270,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, deFormat)
 	}
 
-	gtk2 := GetGTK2Info()
+	gtk2 := GetGTKInfo(gtkrc2)
 
 	if !opt.Show.GTK2Theme {
 		gtkThemeFormat := fmt.Sprintf(infoFormat,
@@ -284,6 +290,26 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, gtkFontFormat)
 	}
 
+	gtk3 := GetGTKInfo(gtkrc3)
+
+	if !opt.Show.GTK3Theme {
+		gtkThemeFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK3 Theme"), sepColor(opt.Sep), textColor(gtk3.Theme))
+		info = append(info, gtkThemeFormat)
+	}
+
+	if !opt.Show.GTK3Icons {
+		gtkIconsFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK3 Icon Theme"), sepColor(opt.Sep), textColor(gtk3.Icons))
+		info = append(info, gtkIconsFormat)
+	}
+
+	if !opt.Show.GTK3Font {
+		gtkFontFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK3 Font"), sepColor(opt.Sep), textColor(gtk3.Font))
+		info = append(info, gtkFontFormat)
+	}
+
 	if !opt.Show.Terminal {
 		terminalFormat := fmt.Sprintf(infoFormat,
 			nameColor("Terminal"), sepColor(opt.Sep), textColor(os.Getenv("TERM")))
@@ -296,7 +322,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		if opt.ShellFull {
 			shell = os.Getenv("SHELL")
 		} else {
-			shell = strings.ToUpper(filepath.Base(os.Getenv("SHELL")))
+			shell = strings.Title(filepath.Base(os.Getenv("SHELL")))
 		}
 
 		shellFormat := fmt.Sprintf(infoFormat,
@@ -322,7 +348,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, packagesFormat)
 	}
 
-	mem := sysinfo.NewMem()
+	mem := sysinfo.Mem{}
 	if err := mem.Get(); err != nil {
 		return nil, err
 	}
@@ -364,7 +390,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.CPU {
-		cpu := sysinfo.NewCPU()
+		cpu := sysinfo.CPU{}
 		if err := cpu.Get(); err != nil {
 			return nil, err
 		}
@@ -375,7 +401,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Root {
-		rootfs := sysinfo.NewFS()
+		rootfs := sysinfo.FS{}
 		if err := rootfs.Get("/"); err != nil {
 			return nil, err
 		}
@@ -403,7 +429,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Home {
-		homefs := sysinfo.NewFS()
+		homefs := sysinfo.FS{}
 		if err := homefs.Get("/home"); err != nil {
 			return nil, err
 		}
@@ -449,7 +475,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		}()
 
 		for _, path := range paths {
-			pathfs := sysinfo.NewFS()
+			pathfs := sysinfo.FS{}
 			if err := pathfs.Get(path); err != nil {
 				return nil, err
 			}
@@ -501,6 +527,9 @@ func New() *Options {
 			GTK2Theme: true,
 			GTK2Icons: true,
 			GTK2Font:  true,
+			GTK3Theme: true,
+			GTK3Icons: true,
+			GTK3Font:  true,
 			Terminal:  true,
 			Shell:     true,
 			Editor:    true,
