@@ -36,4 +36,4 @@ noColor = false
 nameColor = "150"
 textColor = "white+h"
 sepColor = "191"
-bodyColor = "69"
+bodyColor = ["cyan+h", "cyan"]

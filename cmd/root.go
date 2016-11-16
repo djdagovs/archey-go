@@ -40,7 +40,7 @@ var (
 	nameColor string
 	textColor string
 	sepColor  string
-	bodyColor string
+	bodyColor []string
 )
 
 // options
@@ -127,8 +127,8 @@ var RootCmd = &cobra.Command{
 			opt.Colors.Sep = viper.GetString("colors.sepColor")
 		}
 
-		if viper.GetString("colors.bodyColor") != "" {
-			opt.Colors.Body = viper.GetString("colors.bodyColor")
+		if len(viper.GetStringSlice("colors.bodyColor")) != 0 {
+			opt.Colors.Body = viper.GetStringSlice("colors.bodyColor")
 		}
 
 		// TODO: implement - alexdreptu (08 Nov 2016)
@@ -188,7 +188,7 @@ func init() {
 	RootCmd.Flags().StringVar(&nameColor, "name-color", "", "color of the variable name")
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
-	RootCmd.Flags().StringVar(&bodyColor, "body-color", "", "color of the logo body")
+	RootCmd.Flags().StringSliceVar(&bodyColor, "body-color", nil, "color of the logo body")
 	RootCmd.Flags().BoolVar(&noColor, "no-color", false, "don't use any colors")
 	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
 	RootCmd.Flags().StringVar(&config, "config", "", "config file")

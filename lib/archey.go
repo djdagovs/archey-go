@@ -48,7 +48,7 @@ type Colors struct {
 	Name string
 	Text string
 	Sep  string
-	Body string
+	Body []string
 }
 
 type Options struct {
@@ -79,12 +79,12 @@ const infoFormat = "%s%s %s" // eg. OS: Linux
 
 // default info colors
 const (
-	defNameColor  = "111"     // default color of the variable name
-	defTextColor  = "white+h" // default color of the text
-	defSepColor   = "white"   // default color of the separator
-	defBodyColor1 = "111"     // default color of upper body of the logo
-	defBodyColor2 = "69"      // default color of lower body of the logo
-	resetColor    = "reset"   // reset color
+	defNameColor      = "111"     // default color of the variable name
+	defTextColor      = "white+h" // default color of the text
+	defSepColor       = "white"   // default color of the separator
+	defBodyColorUpper = "111"     // default color of upper body of the logo
+	defBodyColorLower = "69"      // default color of lower body of the logo
+	resetColor        = "reset"   // reset color
 )
 
 const archLogo = `
@@ -131,12 +131,24 @@ func (o *Options) Render() (string, error) {
 
 	var bCol1 string
 	var bCol2 string
-	if o.Colors.Body != "" {
-		bCol1 = ansi.ColorCode(o.Colors.Body)
-		bCol2 = bCol1
+	bColors := func() []string {
+		var sl []string
+		if len(o.Colors.Body) > 1 {
+			for _, color := range o.Colors.Body {
+				sl = append(sl, color)
+			}
+		} else {
+			sl = strings.Split(o.Colors.Body[0], ",")
+		}
+		return sl
+	}()
+
+	if len(bColors) > 1 {
+		bCol1 = ansi.ColorCode(bColors[0])
+		bCol2 = ansi.ColorCode(bColors[1])
 	} else {
-		bCol1 = ansi.ColorCode(defBodyColor1)
-		bCol2 = ansi.ColorCode(defBodyColor2)
+		bCol1 = ansi.ColorCode(bColors[0])
+		bCol2 = bCol1
 	}
 
 	data := map[string]string{
@@ -543,6 +555,10 @@ func New() *Options {
 			Name: defNameColor,
 			Sep:  defSepColor,
 			Text: defTextColor,
+			Body: []string{
+				defBodyColorUpper,
+				defBodyColorLower,
+			},
 		},
 	}
 }
