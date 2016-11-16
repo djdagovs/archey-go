@@ -45,14 +45,15 @@ var (
 
 // options
 var (
-	sep        string
-	diskUnit   string
-	memoryUnit string
-	swapUnit   string
-	paths      []string
-	pathFull   bool
-	shellFull  bool
-	noColor    bool
+	sep           string
+	diskUnit      string
+	memoryUnit    string
+	swapUnit      string
+	paths         []string
+	pathFull      bool
+	shellFull     bool
+	upSinceFormat string
+	noColor       bool
 )
 
 var listColors bool
@@ -114,6 +115,10 @@ var RootCmd = &cobra.Command{
 		opt.Paths = viper.GetStringSlice("options.paths")
 		opt.PathFull = viper.GetBool("options.pathFull")
 		opt.ShellFull = viper.GetBool("options.shellFull")
+
+		if viper.GetString("options.upSinceFormat") != "" {
+			opt.UpSinceFormat = viper.GetString("options.upSinceFormat")
+		}
 
 		if viper.GetString("colors.nameColor") != "" {
 			opt.Colors.Name = viper.GetString("colors.nameColor")
@@ -185,6 +190,7 @@ func init() {
 	RootCmd.Flags().StringSliceVar(&paths, "paths", nil, "additional paths to add to disk usage info")
 	RootCmd.Flags().BoolVar(&pathFull, "path-full", false, "show full paths")
 	RootCmd.Flags().BoolVar(&shellFull, "shell-full", false, "print shell's full path instead of its name")
+	RootCmd.Flags().StringVar(&upSinceFormat, "up-since-format", "", "strftime format for up since")
 	RootCmd.Flags().StringVar(&nameColor, "name-color", "", "color of the variable name")
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
@@ -225,6 +231,7 @@ func init() {
 	viper.BindPFlag("options.paths", RootCmd.Flags().Lookup("paths"))
 	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
 	viper.BindPFlag("options.shellFull", RootCmd.Flags().Lookup("shell-full"))
+	viper.BindPFlag("options.upSinceFormat", RootCmd.Flags().Lookup("up-since-format"))
 
 	viper.BindPFlag("colors.nameColor", RootCmd.Flags().Lookup("name-color"))
 	viper.BindPFlag("colors.textColor", RootCmd.Flags().Lookup("text-color"))

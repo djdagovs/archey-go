@@ -52,15 +52,16 @@ type Colors struct {
 }
 
 type Options struct {
-	Sep        string
-	DiskUnit   string
-	MemoryUnit string
-	SwapUnit   string
-	Paths      []string
-	PathFull   bool
-	ShellFull  bool
-	Show       Show
-	Colors     Colors
+	Sep           string
+	DiskUnit      string
+	MemoryUnit    string
+	SwapUnit      string
+	Paths         []string
+	PathFull      bool
+	ShellFull     bool
+	UpSinceFormat string
+	Show          Show
+	Colors        Colors
 }
 
 // pacman's local database of installed packages
@@ -68,10 +69,11 @@ const pacmanDir = "/var/lib/pacman/local"
 
 // default options
 const (
-	defSep        = ":"         // default separator
-	defDiskUnit   = "gb"        // default unit for disk usage
-	defMemoryUnit = defDiskUnit // default unit for memory usage
-	defSwapUnit   = defMemoryUnit
+	defSep           = ":"                  // default separator
+	defDiskUnit      = "gb"                 // default unit for disk usage
+	defMemoryUnit    = defDiskUnit          // default unit for disk usage
+	defSwapUnit      = defMemoryUnit        // default unit for memory usage
+	defUpSinceFormat = "%a, %d %b %Y at %r" // strftime format
 )
 
 // Name Sep Info
@@ -266,7 +268,9 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if !opt.Show.UpSince {
 		upSinceFormat := fmt.Sprintf(infoFormat,
-			nameColor("Up since"), sepColor(opt.Sep), textColor(up.UpSince()))
+			nameColor("Up since"),
+			sepColor(opt.Sep),
+			textColor(up.UpSinceFormat(opt.UpSinceFormat)))
 		info = append(info, upSinceFormat)
 	}
 
@@ -520,12 +524,13 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 func New() *Options {
 	return &Options{
-		Sep:        defSep,
-		MemoryUnit: defMemoryUnit,
-		SwapUnit:   defSwapUnit,
-		DiskUnit:   defDiskUnit,
-		PathFull:   false,
-		ShellFull:  false,
+		Sep:           defSep,
+		MemoryUnit:    defMemoryUnit,
+		SwapUnit:      defSwapUnit,
+		DiskUnit:      defDiskUnit,
+		PathFull:      false,
+		ShellFull:     false,
+		UpSinceFormat: defUpSinceFormat,
 		Show: Show{
 			OS:        true,
 			Arch:      true,
