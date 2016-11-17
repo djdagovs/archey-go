@@ -354,8 +354,9 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if !opt.Show.Packages {
 		count, err := utils.CountDir(pacmanDir)
+		// if distro is not arch set count.Dirs to 0
 		if err != nil {
-			return nil, err
+			count.Dirs = 0
 		}
 
 		n := strconv.Itoa(count.Dirs)

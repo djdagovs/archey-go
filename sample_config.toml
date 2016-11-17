@@ -30,7 +30,7 @@ diskUnit = "gb"
 paths = ["/usr", "/tmp"]
 pathFull = false
 shellFull = true
-upSinceFormat = "%A, %d %B %Y at %H:%M:%S %Z"
+upSinceFormat = "%A, %d %B %Y at %T %Z"
 noColor = false
 
 [colors]
