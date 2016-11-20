@@ -10,7 +10,7 @@ Archey-go
 
 ## About
 
-_**Archey**_ is traditionally a _**Linux**_ tool for displaying system info in a pretty way on _**Arch Linux**_. It was originally written in _**Python 2**_ and then rewriten in _**Python 3**_. _**Archey-go**_ is written from scratch in _**[Go](https://golang.org)**_ and it compiles to a single statically linked binary. It's fast, it has no external dependencies and doesn't call any system utilities to gather the information. It also alows a decent amount of customization to satisfy your _**[unixporn](https://www.reddit.com/r/unixporn)**_ addiction.
+_**Archey**_ is traditionally a _**Linux**_ tool for displaying system info in a pretty way on _**Arch Linux**_. It was originally written in _**Python 2**_ and then rewriten in _**Python 3**_. _**Archey-go**_ is written from scratch in _**[Go](https://golang.org)**_ and it compiles to a single statically linked binary. It's fast, it has no external dependencies and doesn't call any system utilities to gather the information. It also allows a decent amount of customization to satisfy your _**[unixporn](https://www.reddit.com/r/unixporn)**_ addiction.
 
 ![](screenshots/ss1.png)
 
@@ -91,7 +91,7 @@ Don't display system uptime.
 ```
 --no-up-since
 ```
-Don't display "**Up since**" - the date and time when the system booted.
+Don't display "**Up since**" - the time and date when the system booted.
 
 ```
 --no-wm
@@ -346,4 +346,4 @@ Show colors and styles
 ```
 --config
 ```
-Specify config file. The configuration file is optional, _**archey-go**_ can be configured via flags. By default _**archey-go**_ looks first in the current directory for _**config.toml**_, if it's not there then it looks for ```$HOME/.archey-go/config.toml``` or ```$HOME/.config/archey-go/config.toml``` in this order. If neither one of them is there, it looks for ```/etc/archety-go/config.toml```.
+Specify config file. The configuration file is optional, _**archey-go**_ can be configured via flags. By default _**archey-go**_ looks first in the current directory for _**config.toml**_, if it's not there then it looks for ```$HOME/.archey-go/config.toml``` or ```$HOME/.config/archey-go/config.toml``` in this order. If neither one of them is there, it looks for ```/etc/archey-go/config.toml```.
