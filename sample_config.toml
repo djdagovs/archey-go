@@ -7,10 +7,10 @@ noUpSince = false
 noWM = false
 noDE = false
 noGTK2Theme = true
-noGTK2Icons = true
+noGTK2IconTheme = true
 noGTK2Font = true
 noGTK3Theme = true
-noGTK3Icons = true
+noGTK3IconTheme = true
 noGTK3Font = true
 noTerminal = false
 noShell = false
@@ -30,7 +30,7 @@ diskUnit = "gb"
 paths = ["/usr", "/tmp"]
 pathFull = false
 shellFull = true
-upSinceFormat = "%A, %d %B %Y at %T %Z"
+upSinceFormat = "%A, %d %B %Y at %r %Z"
 noColor = false
 
 [colors]

@@ -10,30 +10,30 @@ import (
 )
 
 var (
-	noOS        bool
-	noArch      bool
-	noKernel    bool
-	noUser      bool
-	noHostname  bool
-	noUptime    bool
-	noUpSince   bool
-	noWM        bool
-	noDE        bool
-	noGTK2Theme bool
-	noGTK2Icons bool
-	noGTK2Font  bool
-	noGTK3Theme bool
-	noGTK3Icons bool
-	noGTK3Font  bool
-	noTerminal  bool
-	noShell     bool
-	noEditor    bool
-	noPackages  bool
-	noMemory    bool
-	noSwap      bool
-	noCPU       bool
-	noRoot      bool
-	noHome      bool
+	noOS            bool
+	noArch          bool
+	noKernel        bool
+	noUser          bool
+	noHostname      bool
+	noUptime        bool
+	noUpSince       bool
+	noWM            bool
+	noDE            bool
+	noGTK2Theme     bool
+	noGTK2IconTheme bool
+	noGTK2Font      bool
+	noGTK3Theme     bool
+	noGTK3IconTheme bool
+	noGTK3Font      bool
+	noTerminal      bool
+	noShell         bool
+	noEditor        bool
+	noPackages      bool
+	noMemory        bool
+	noSwap          bool
+	noCPU           bool
+	noRoot          bool
+	noHome          bool
 )
 
 var (
@@ -80,10 +80,10 @@ var RootCmd = &cobra.Command{
 		opt.Show.WM = viper.GetBool("show.noWM")
 		opt.Show.DE = viper.GetBool("show.noDE")
 		opt.Show.GTK2Theme = viper.GetBool("show.noGTK2Theme")
-		opt.Show.GTK2Icons = viper.GetBool("show.noGTK2Icons")
+		opt.Show.GTK2IconTheme = viper.GetBool("show.noGTK2IconTheme")
 		opt.Show.GTK2Font = viper.GetBool("show.noGTK2Font")
 		opt.Show.GTK3Theme = viper.GetBool("show.noGTK3Theme")
-		opt.Show.GTK3Icons = viper.GetBool("show.noGTK3Icons")
+		opt.Show.GTK3IconTheme = viper.GetBool("show.noGTK3IconTheme")
 		opt.Show.GTK3Font = viper.GetBool("show.noGTK3Font")
 		opt.Show.Terminal = viper.GetBool("show.noTerminal")
 		opt.Show.Shell = viper.GetBool("show.noShell")
@@ -169,10 +169,10 @@ func init() {
 	RootCmd.Flags().BoolVar(&noWM, "no-wm", false, "don't print Window Manager name")
 	RootCmd.Flags().BoolVar(&noDE, "no-de", false, "don't print Desktop Environment name")
 	RootCmd.Flags().BoolVar(&noGTK2Theme, "no-gtk2-theme", false, "don't print GTK2 theme name")
-	RootCmd.Flags().BoolVar(&noGTK2Icons, "no-gtk2-icons", false, "don't print GTK2 icons theme name")
+	RootCmd.Flags().BoolVar(&noGTK2IconTheme, "no-gtk2-icon-theme", false, "don't print GTK2 icon theme name")
 	RootCmd.Flags().BoolVar(&noGTK2Font, "no-gtk2-font", false, "don't print GTK2 font name")
 	RootCmd.Flags().BoolVar(&noGTK3Theme, "no-gtk3-theme", false, "don't print GTK3 theme name")
-	RootCmd.Flags().BoolVar(&noGTK3Icons, "no-gtk3-icons", false, "don't print GTK3 icons theme name")
+	RootCmd.Flags().BoolVar(&noGTK3IconTheme, "no-gtk3-icon-theme", false, "don't print GTK3 icon theme name")
 	RootCmd.Flags().BoolVar(&noGTK3Font, "no-gtk3-font", false, "don't print GTK3 font name")
 	RootCmd.Flags().BoolVar(&noTerminal, "no-terminal", false, "don't print terminal name")
 	RootCmd.Flags().BoolVar(&noShell, "no-shell", false, "don't print shell name")
@@ -195,6 +195,7 @@ func init() {
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
 	RootCmd.Flags().StringSliceVar(&bodyColor, "body-color", nil, "color of the logo body")
+	// TODO: implement - Alexandru Dreptu (20 Nov 2016)
 	RootCmd.Flags().BoolVar(&noColor, "no-color", false, "don't use any colors")
 	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
 	RootCmd.Flags().StringVar(&config, "config", "", "config file")
@@ -209,10 +210,10 @@ func init() {
 	viper.BindPFlag("show.noWM", RootCmd.Flags().Lookup("no-wm"))
 	viper.BindPFlag("show.noDE", RootCmd.Flags().Lookup("no-de"))
 	viper.BindPFlag("show.noGTK2Theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
-	viper.BindPFlag("show.noGTK2Icons", RootCmd.Flags().Lookup("no-gtk2-icons"))
+	viper.BindPFlag("show.noGTK2IconTheme", RootCmd.Flags().Lookup("no-gtk2-icon-theme"))
 	viper.BindPFlag("show.noGTK2Font", RootCmd.Flags().Lookup("no-gtk2-font"))
 	viper.BindPFlag("show.noGTK3Theme", RootCmd.Flags().Lookup("no-gtk3-theme"))
-	viper.BindPFlag("show.noGTK3Icons", RootCmd.Flags().Lookup("no-gtk3-icons"))
+	viper.BindPFlag("show.noGTK3IconTheme", RootCmd.Flags().Lookup("no-gtk3-icon-theme"))
 	viper.BindPFlag("show.noGTK3Font", RootCmd.Flags().Lookup("no-gtk3-font"))
 	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
 	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
@@ -232,6 +233,7 @@ func init() {
 	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
 	viper.BindPFlag("options.shellFull", RootCmd.Flags().Lookup("shell-full"))
 	viper.BindPFlag("options.upSinceFormat", RootCmd.Flags().Lookup("up-since-format"))
+	viper.BindPFlag("options.noColor", RootCmd.Flags().Lookup("no-color"))
 
 	viper.BindPFlag("colors.nameColor", RootCmd.Flags().Lookup("name-color"))
 	viper.BindPFlag("colors.textColor", RootCmd.Flags().Lookup("text-color"))

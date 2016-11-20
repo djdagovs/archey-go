@@ -18,30 +18,30 @@ import (
 type info map[string]string
 
 type Show struct {
-	OS        bool
-	Arch      bool
-	Kernel    bool
-	User      bool
-	Hostname  bool
-	Uptime    bool
-	UpSince   bool
-	WM        bool
-	DE        bool
-	GTK2Theme bool
-	GTK2Icons bool
-	GTK2Font  bool
-	GTK3Theme bool
-	GTK3Icons bool
-	GTK3Font  bool
-	Terminal  bool
-	Shell     bool
-	Editor    bool
-	Packages  bool
-	Memory    bool
-	Swap      bool
-	CPU       bool
-	Root      bool
-	Home      bool
+	OS            bool
+	Arch          bool
+	Kernel        bool
+	User          bool
+	Hostname      bool
+	Uptime        bool
+	UpSince       bool
+	WM            bool
+	DE            bool
+	GTK2Theme     bool
+	GTK2IconTheme bool
+	GTK2Font      bool
+	GTK3Theme     bool
+	GTK3IconTheme bool
+	GTK3Font      bool
+	Terminal      bool
+	Shell         bool
+	Editor        bool
+	Packages      bool
+	Memory        bool
+	Swap          bool
+	CPU           bool
+	Root          bool
+	Home          bool
 }
 
 type Colors struct {
@@ -69,11 +69,11 @@ const pacmanDir = "/var/lib/pacman/local"
 
 // default options
 const (
-	defSep           = ":"                  // default separator
-	defDiskUnit      = "gb"                 // default unit for disk usage
-	defMemoryUnit    = defDiskUnit          // default unit for disk usage
-	defSwapUnit      = defMemoryUnit        // default unit for memory usage
-	defUpSinceFormat = "%a, %d %b %Y at %r" // strftime format
+	defSep           = ":"                     // default separator
+	defDiskUnit      = "gb"                    // default unit for disk usage
+	defMemoryUnit    = defDiskUnit             // default unit for disk usage
+	defSwapUnit      = defMemoryUnit           // default unit for memory usage
+	defUpSinceFormat = "%a, %d %b %Y at %T %Z" // strftime format
 )
 
 // Name Sep Info
@@ -122,8 +122,12 @@ var (
 	}
 )
 
-var gtkrc2 = filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
-var gtkrc3 = filepath.Join(os.Getenv("HOME"), ".config/gtk-3.0/settings.ini")
+var (
+	userGTK2rc = filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
+	sysGTK2rc  = "/etc/gtk-2.0/gtkrc"
+	userGTK3rc = filepath.Join(os.Getenv("HOME"), ".config/gtk-3.0/settings.ini")
+	sysGTK3rc  = "/etc/gtk-3.0/settings.ini"
+)
 
 func (o *Options) Render() (string, error) {
 	info, err := getFormattedInfo(o)
@@ -286,43 +290,65 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, deFormat)
 	}
 
-	gtk2 := GetGTKInfo(gtkrc2)
+	var gtk GTK
+
+	// if ~/.gtkrc-2.0 exists use it
+	// otherwise use the system wide /etc/gtk-2.0/gtkrc
+	if utils.IsExistFile(userGTK2rc) {
+		gtk = GetGTKInfo(userGTK2rc)
+	} else if utils.IsExistFile(sysGTK2rc) {
+		gtk = GetGTKInfo(sysGTK2rc)
+	} else {
+		gtk.Theme = "None"
+		gtk.Icons = "None"
+		gtk.Font = "None"
+	}
 
 	if !opt.Show.GTK2Theme {
 		gtkThemeFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK2 Theme"), sepColor(opt.Sep), textColor(gtk2.Theme))
+			nameColor("GTK2 Theme"), sepColor(opt.Sep), textColor(gtk.Theme))
 		info = append(info, gtkThemeFormat)
 	}
 
-	if !opt.Show.GTK2Icons {
+	if !opt.Show.GTK2IconTheme {
 		gtkIconsFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK2 Icon Theme"), sepColor(opt.Sep), textColor(gtk2.Icons))
+			nameColor("GTK2 Icon Theme"), sepColor(opt.Sep), textColor(gtk.Icons))
 		info = append(info, gtkIconsFormat)
 	}
 
 	if !opt.Show.GTK2Font {
 		gtkFontFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK2 Font"), sepColor(opt.Sep), textColor(gtk2.Font))
+			nameColor("GTK2 Font"), sepColor(opt.Sep), textColor(gtk.Font))
 		info = append(info, gtkFontFormat)
 	}
 
-	gtk3 := GetGTKInfo(gtkrc3)
+	// if ~/.config/gtkrc-3.0/settings.ini exists use it
+	// otherwise use the system wide /etc/gtk-3.0/settings.ini
+	if utils.IsExistFile(userGTK3rc) {
+		gtk = GetGTKInfo(userGTK3rc)
+	} else if utils.IsExistFile(sysGTK3rc) {
+		gtk = GetGTKInfo(sysGTK3rc)
+	} else {
+		gtk.Theme = "None"
+		gtk.Icons = "None"
+		gtk.Font = "None"
+	}
 
 	if !opt.Show.GTK3Theme {
 		gtkThemeFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK3 Theme"), sepColor(opt.Sep), textColor(gtk3.Theme))
+			nameColor("GTK3 Theme"), sepColor(opt.Sep), textColor(gtk.Theme))
 		info = append(info, gtkThemeFormat)
 	}
 
-	if !opt.Show.GTK3Icons {
+	if !opt.Show.GTK3IconTheme {
 		gtkIconsFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK3 Icon Theme"), sepColor(opt.Sep), textColor(gtk3.Icons))
+			nameColor("GTK3 Icon Theme"), sepColor(opt.Sep), textColor(gtk.Icons))
 		info = append(info, gtkIconsFormat)
 	}
 
 	if !opt.Show.GTK3Font {
 		gtkFontFormat := fmt.Sprintf(infoFormat,
-			nameColor("GTK3 Font"), sepColor(opt.Sep), textColor(gtk3.Font))
+			nameColor("GTK3 Font"), sepColor(opt.Sep), textColor(gtk.Font))
 		info = append(info, gtkFontFormat)
 	}
 
@@ -354,7 +380,8 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if !opt.Show.Packages {
 		count, err := utils.CountDir(pacmanDir)
-		// if distro is not arch set count.Dirs to 0
+		// if pacmanDir doesn't exist set count.Dirs to 0
+		// instead of returning error and exiting
 		if err != nil {
 			count.Dirs = 0
 		}
@@ -533,29 +560,29 @@ func New() *Options {
 		ShellFull:     false,
 		UpSinceFormat: defUpSinceFormat,
 		Show: Show{
-			OS:        true,
-			Arch:      true,
-			Kernel:    true,
-			User:      true,
-			Hostname:  true,
-			Uptime:    true,
-			UpSince:   true,
-			WM:        true,
-			DE:        true,
-			GTK2Theme: true,
-			GTK2Icons: true,
-			GTK2Font:  true,
-			GTK3Theme: true,
-			GTK3Icons: true,
-			GTK3Font:  true,
-			Terminal:  true,
-			Shell:     true,
-			Editor:    true,
-			Packages:  true,
-			Memory:    true,
-			CPU:       true,
-			Root:      true,
-			Home:      true,
+			OS:            true,
+			Arch:          true,
+			Kernel:        true,
+			User:          true,
+			Hostname:      true,
+			Uptime:        true,
+			UpSince:       true,
+			WM:            true,
+			DE:            true,
+			GTK2Theme:     true,
+			GTK2IconTheme: true,
+			GTK2Font:      true,
+			GTK3Theme:     true,
+			GTK3IconTheme: true,
+			GTK3Font:      true,
+			Terminal:      true,
+			Shell:         true,
+			Editor:        true,
+			Packages:      true,
+			Memory:        true,
+			CPU:           true,
+			Root:          true,
+			Home:          true,
 		},
 		Colors: Colors{
 			Name: defNameColor,

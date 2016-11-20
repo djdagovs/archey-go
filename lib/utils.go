@@ -9,8 +9,14 @@ import (
 	"github.com/mgutz/ansi"
 )
 
+type GTK struct {
+	Theme string
+	Icons string
+	Font  string
+}
+
 func GetWM() string {
-	var wm = "None"
+	wm := "None"
 	wmList := map[string]string{
 		"awesome":       "Awesome",
 		"blackbox":      "Blackbox",
@@ -70,18 +76,12 @@ func GetDE() string {
 	return de
 }
 
-func GetGTKInfo(f string) struct{ Theme, Icons, Font string } {
-	gtk2 := struct {
-		Theme, Icons, Font string
-	}{
-		Theme: "None",
-		Icons: "None",
-		Font:  "None",
-	}
+func GetGTKInfo(f string) GTK {
+	var gtk GTK
 
 	file, err := os.Open(f)
 	if err != nil {
-		return gtk2
+		return gtk
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -101,19 +101,19 @@ func GetGTKInfo(f string) struct{ Theme, Icons, Font string } {
 
 		switch key {
 		case "gtk-theme-name":
-			gtk2.Theme = value
+			gtk.Theme = value
 		case "gtk-icon-theme-name":
-			gtk2.Icons = value
+			gtk.Icons = value
 		case "gtk-font-name":
-			gtk2.Font = value
+			gtk.Font = value
 		}
 	}
 
 	if err := scanner.Err(); err != nil {
-		return gtk2
+		return gtk
 	}
 
-	return gtk2
+	return gtk
 }
 
 func ListColors() {
