@@ -12,9 +12,9 @@ Archey-go
 
 _**Archey**_ is traditionally a _**Linux**_ tool for displaying system info in a pretty way on _**Arch Linux**_. It was originally written in _**Python 2**_ and then rewriten in _**Python 3**_. _**Archey-go**_ is written from scratch in _**[Go](https://golang.org)**_ and it compiles to a single statically linked binary. It's fast, it has no external dependencies and doesn't call any system utilities to gather the information. It also allows a decent amount of customization to satisfy your _**[unixporn](https://www.reddit.com/r/unixporn)**_ addiction.
 
-![](screenshots/ss1.png)
+![](screenshots/ss1.png?raw=true)
 
-![](screenshots/ss2.png)
+![](screenshots/ss2.png?raw=true)
 
 ## Installing
 
