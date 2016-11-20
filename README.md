@@ -18,9 +18,9 @@ _**Archey**_ is traditionally a _**Linux**_ tool for displaying system info in a
 
 ## Installing
 
-To install Archey-go you must have Go [installed](https://golang.org/doc/install) and set up to be able to compile it first.
+To install _**Archey-go**_ you must have _**Go**_ [installed](https://golang.org/doc/install) and set up to be able to compile it first.
 
-On Arch Linux you can install Go with ```pacman -S go go-tools```.
+On Arch Linux you can install _**Go**_ with ```pacman -S go go-tools```.
 
 Clone the repository and build it.
 ```
@@ -30,9 +30,9 @@ go build
 ```
 The result is a binary called _**archey-go**_ that you can move wherever you want afterwards.
 
-Alternatively you can install Archey-go via go tooling.
+Alternatively you can install _**Archey-go**_ via go tooling.
 
-You need to export $GOPATH and $GOBIN then add $GOBIN to $PATH
+You need to export ```$GOPATH``` and ```$GOBIN``` then add ```$GOBIN``` to ```$PATH```
 
 E.g. if you're using bash add to ~/.bashrc
 ```
@@ -42,12 +42,12 @@ export PATH+=:$GOBIN
 ```
 where _**.gocode**_ can be replaced with any directory name. Then ```source ~/.bashrc```.
 
-Assuming you have that set up, you install Archey-go by executing
+Assuming you have that set up, you install _**Archey-go**_ by executing
 ```
 go get github.com/alexdreptu/archey-go
 ```
 
-The **_archey-go_** binary will be located in $GOBIN
+The **_archey-go_** binary will be located in ```$GOBIN```
 ```
 alectic@particular $ echo $GOBIN
 /home/alectic/.gocode/bin
@@ -58,7 +58,7 @@ alectic@particular $
 
 ## Usage
 
-_**Archey-go**_ can be used with or without a config file. The configuration file format is _**[toml](https://github.com/toml-lang/toml)**_. Each flag responsible for configuration has an equivalent variable in its configuration file. See _**[same_config.toml](https://github.com/alexdreptu/archey-go/blob/master/sample_config.toml)**_.
+_**Archey-go**_ can be used with or without a config file. The configuration file format is _**[toml](https://github.com/toml-lang/toml)**_. Each flag responsible for configuration has an equivalent variable in its configuration file. See _**[sample_config.toml](https://github.com/alexdreptu/archey-go/blob/master/sample_config.toml)**_.
 
 ### Flags
 
@@ -66,7 +66,7 @@ _**Archey-go**_ can be used with or without a config file. The configuration fil
 --no-os
 ```
 
-Don't display OS name as read from /etc/os-release.
+Don't display OS name as read from ```/etc/os-release```.
 
 ```
 --no-arch
