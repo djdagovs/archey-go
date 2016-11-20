@@ -346,4 +346,4 @@ Show colors and styles
 ```
 --config
 ```
-Specify config file. The configuration file is optional, _**archey-go**_ can be configured via flags. By default _**archey-go**_ looks first in the current directory for _**config.toml**_, if it's not there then it looks for _**$HOME/.archey-go/config.toml**_ or _**$HOME/.config/archey-go/config.toml**_ in this order. If neither one of them is there, it looks for _**/etc/archety-go/config.toml**_.
+Specify config file. The configuration file is optional, _**archey-go**_ can be configured via flags. By default _**archey-go**_ looks first in the current directory for _**config.toml**_, if it's not there then it looks for ```$HOME/.archey-go/config.toml``` or ```$HOME/.config/archey-go/config.toml``` in this order. If neither one of them is there, it looks for ```/etc/archety-go/config.toml```.
