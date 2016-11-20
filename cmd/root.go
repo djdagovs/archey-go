@@ -10,30 +10,32 @@ import (
 )
 
 var (
-	noOS            bool
-	noArch          bool
-	noKernel        bool
-	noUser          bool
-	noHostname      bool
-	noUptime        bool
-	noUpSince       bool
-	noWM            bool
-	noDE            bool
-	noGTK2Theme     bool
-	noGTK2IconTheme bool
-	noGTK2Font      bool
-	noGTK3Theme     bool
-	noGTK3IconTheme bool
-	noGTK3Font      bool
-	noTerminal      bool
-	noShell         bool
-	noEditor        bool
-	noPackages      bool
-	noMemory        bool
-	noSwap          bool
-	noCPU           bool
-	noRoot          bool
-	noHome          bool
+	noOS              bool
+	noArch            bool
+	noKernel          bool
+	noUser            bool
+	noHostname        bool
+	noUptime          bool
+	noUpSince         bool
+	noWM              bool
+	noDE              bool
+	noGTK2Theme       bool
+	noGTK2IconTheme   bool
+	noGTK2Font        bool
+	noGTK2CursorTheme bool
+	noGTK3Theme       bool
+	noGTK3IconTheme   bool
+	noGTK3CursorTheme bool
+	noGTK3Font        bool
+	noTerminal        bool
+	noShell           bool
+	noEditor          bool
+	noPackages        bool
+	noMemory          bool
+	noSwap            bool
+	noCPU             bool
+	noRoot            bool
+	noHome            bool
 )
 
 var (
@@ -82,9 +84,11 @@ var RootCmd = &cobra.Command{
 		opt.Show.GTK2Theme = viper.GetBool("show.noGTK2Theme")
 		opt.Show.GTK2IconTheme = viper.GetBool("show.noGTK2IconTheme")
 		opt.Show.GTK2Font = viper.GetBool("show.noGTK2Font")
+		opt.Show.GTK2CursorTheme = viper.GetBool("show.noGTK2CursorTheme")
 		opt.Show.GTK3Theme = viper.GetBool("show.noGTK3Theme")
 		opt.Show.GTK3IconTheme = viper.GetBool("show.noGTK3IconTheme")
 		opt.Show.GTK3Font = viper.GetBool("show.noGTK3Font")
+		opt.Show.GTK3CursorTheme = viper.GetBool("show.noGTK3CursorTheme")
 		opt.Show.Terminal = viper.GetBool("show.noTerminal")
 		opt.Show.Shell = viper.GetBool("show.noShell")
 		opt.Show.Editor = viper.GetBool("show.noEditor")
@@ -171,9 +175,11 @@ func init() {
 	RootCmd.Flags().BoolVar(&noGTK2Theme, "no-gtk2-theme", false, "don't print GTK2 theme name")
 	RootCmd.Flags().BoolVar(&noGTK2IconTheme, "no-gtk2-icon-theme", false, "don't print GTK2 icon theme name")
 	RootCmd.Flags().BoolVar(&noGTK2Font, "no-gtk2-font", false, "don't print GTK2 font name")
+	RootCmd.Flags().BoolVar(&noGTK2CursorTheme, "no-gtk2-cursor-theme", false, "don't print GTK2 cursor theme name")
 	RootCmd.Flags().BoolVar(&noGTK3Theme, "no-gtk3-theme", false, "don't print GTK3 theme name")
 	RootCmd.Flags().BoolVar(&noGTK3IconTheme, "no-gtk3-icon-theme", false, "don't print GTK3 icon theme name")
 	RootCmd.Flags().BoolVar(&noGTK3Font, "no-gtk3-font", false, "don't print GTK3 font name")
+	RootCmd.Flags().BoolVar(&noGTK3CursorTheme, "no-gtk3-cursor-theme", false, "don't print GTK3 cursor theme name")
 	RootCmd.Flags().BoolVar(&noTerminal, "no-terminal", false, "don't print terminal name")
 	RootCmd.Flags().BoolVar(&noShell, "no-shell", false, "don't print shell name")
 	RootCmd.Flags().BoolVar(&noEditor, "no-editor", false, "don't print editor name")
@@ -212,9 +218,11 @@ func init() {
 	viper.BindPFlag("show.noGTK2Theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
 	viper.BindPFlag("show.noGTK2IconTheme", RootCmd.Flags().Lookup("no-gtk2-icon-theme"))
 	viper.BindPFlag("show.noGTK2Font", RootCmd.Flags().Lookup("no-gtk2-font"))
+	viper.BindPFlag("show.noGTK2CursorTheme", RootCmd.Flags().Lookup("no-gtk2-cursor-theme"))
 	viper.BindPFlag("show.noGTK3Theme", RootCmd.Flags().Lookup("no-gtk3-theme"))
 	viper.BindPFlag("show.noGTK3IconTheme", RootCmd.Flags().Lookup("no-gtk3-icon-theme"))
 	viper.BindPFlag("show.noGTK3Font", RootCmd.Flags().Lookup("no-gtk3-font"))
+	viper.BindPFlag("show.noGTK3CursorTheme", RootCmd.Flags().Lookup("no-gtk3-cursor-theme"))
 	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
 	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
 	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))

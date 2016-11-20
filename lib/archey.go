@@ -18,30 +18,32 @@ import (
 type info map[string]string
 
 type Show struct {
-	OS            bool
-	Arch          bool
-	Kernel        bool
-	User          bool
-	Hostname      bool
-	Uptime        bool
-	UpSince       bool
-	WM            bool
-	DE            bool
-	GTK2Theme     bool
-	GTK2IconTheme bool
-	GTK2Font      bool
-	GTK3Theme     bool
-	GTK3IconTheme bool
-	GTK3Font      bool
-	Terminal      bool
-	Shell         bool
-	Editor        bool
-	Packages      bool
-	Memory        bool
-	Swap          bool
-	CPU           bool
-	Root          bool
-	Home          bool
+	OS              bool
+	Arch            bool
+	Kernel          bool
+	User            bool
+	Hostname        bool
+	Uptime          bool
+	UpSince         bool
+	WM              bool
+	DE              bool
+	GTK2Theme       bool
+	GTK2IconTheme   bool
+	GTK2Font        bool
+	GTK2CursorTheme bool
+	GTK3Theme       bool
+	GTK3IconTheme   bool
+	GTK3Font        bool
+	GTK3CursorTheme bool
+	Terminal        bool
+	Shell           bool
+	Editor          bool
+	Packages        bool
+	Memory          bool
+	Swap            bool
+	CPU             bool
+	Root            bool
+	Home            bool
 }
 
 type Colors struct {
@@ -322,6 +324,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		info = append(info, gtkFontFormat)
 	}
 
+	if !opt.Show.GTK2CursorTheme {
+		gtkCursorFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK2 Cursor Theme"), sepColor(opt.Sep), textColor(gtk.Cursor))
+		info = append(info, gtkCursorFormat)
+	}
+
 	// if ~/.config/gtkrc-3.0/settings.ini exists use it
 	// otherwise use the system wide /etc/gtk-3.0/settings.ini
 	if utils.IsExistFile(userGTK3rc) {
@@ -332,6 +340,7 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		gtk.Theme = "None"
 		gtk.Icons = "None"
 		gtk.Font = "None"
+		gtk.Cursor = "None"
 	}
 
 	if !opt.Show.GTK3Theme {
@@ -350,6 +359,12 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 		gtkFontFormat := fmt.Sprintf(infoFormat,
 			nameColor("GTK3 Font"), sepColor(opt.Sep), textColor(gtk.Font))
 		info = append(info, gtkFontFormat)
+	}
+
+	if !opt.Show.GTK3CursorTheme {
+		gtkCursorFormat := fmt.Sprintf(infoFormat,
+			nameColor("GTK3 Cursor Theme"), sepColor(opt.Sep), textColor(gtk.Cursor))
+		info = append(info, gtkCursorFormat)
 	}
 
 	if !opt.Show.Terminal {
@@ -560,29 +575,31 @@ func New() *Options {
 		ShellFull:     false,
 		UpSinceFormat: defUpSinceFormat,
 		Show: Show{
-			OS:            true,
-			Arch:          true,
-			Kernel:        true,
-			User:          true,
-			Hostname:      true,
-			Uptime:        true,
-			UpSince:       true,
-			WM:            true,
-			DE:            true,
-			GTK2Theme:     true,
-			GTK2IconTheme: true,
-			GTK2Font:      true,
-			GTK3Theme:     true,
-			GTK3IconTheme: true,
-			GTK3Font:      true,
-			Terminal:      true,
-			Shell:         true,
-			Editor:        true,
-			Packages:      true,
-			Memory:        true,
-			CPU:           true,
-			Root:          true,
-			Home:          true,
+			OS:              true,
+			Arch:            true,
+			Kernel:          true,
+			User:            true,
+			Hostname:        true,
+			Uptime:          true,
+			UpSince:         true,
+			WM:              true,
+			DE:              true,
+			GTK2Theme:       true,
+			GTK2IconTheme:   true,
+			GTK2Font:        true,
+			GTK2CursorTheme: true,
+			GTK3Theme:       true,
+			GTK3IconTheme:   true,
+			GTK3Font:        true,
+			GTK3CursorTheme: true,
+			Terminal:        true,
+			Shell:           true,
+			Editor:          true,
+			Packages:        true,
+			Memory:          true,
+			CPU:             true,
+			Root:            true,
+			Home:            true,
 		},
 		Colors: Colors{
 			Name: defNameColor,

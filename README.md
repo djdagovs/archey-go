@@ -66,88 +66,98 @@ _**Archey-go**_ can be used with or without a config file. The configuration fil
 --no-os
 ```
 
-Don't display OS name as read from ```/etc/os-release```.
+Don't show OS name as read from ```/etc/os-release```.
 
 ```
 --no-arch
 ```
-Don't display architecture e.g. _**x86_64**_ which is displayed next to OS name on the same line.
+Don't show architecture e.g. _**x86_64**_ which is displayed next to OS name on the same line.
 
 ```
 --no-kernel
 ```
-Don't display kernel version.
+Don't show kernel version.
 
 ```
 --no-hostname
 ```
-Don't display hostname.
+Don't show hostname.
 
 ```
 --no-uptime
 ```
-Don't display system uptime.
+Don't show system uptime.
 
 ```
 --no-up-since
 ```
-Don't display "**Up since**" - the time and date when the system booted.
+Don't show "**Up since**" - the time and date when the system booted.
 
 ```
 --no-wm
 ```
-Don't display Window Manager name.
+Don't show Window Manager name.
 
 ```
 --no-de
 ```
-Don't display Desktop Environment name.
+Don't show Desktop Environment name.
 
 ```
 --no-gtk2-theme
 ```
-Don't display GTK2 theme name. The theme name is read from ```$HOME/.gtkrc-2.0```, if it doesn't exist it's read from ```/etc/gtk-2.0/gtkrc```. If neither one of them exists, _**None**_ is displayed.
+Don't show GTK2 theme name. The theme name is read from ```$HOME/.gtkrc-2.0```, if it doesn't exist it's read from ```/etc/gtk-2.0/gtkrc```. If neither one of them exists, _**None**_ is displayed.
 
 ```
 --no-gtk2-icon-theme
 ```
-Don't display GTK2 icon theme name. The icon theme name is read the same way GTK2 theme name is.
+Don't show GTK2 icon theme name. The icon theme name is read the same way GTK2 theme name is.
 
 ```
 --no-gtk2-font
 ```
-Don't display GTK2 font name. The font name is read the same way GTK2 theme name is.
+Don't show GTK2 font name. The font name is read the same way GTK2 theme name is.
+
+```
+--no-gtk2-cursor-theme
+```
+Don't show GTK2 cursor theme name. The cursor theme name is read the same way GTK2 theme name is.
 
 
 ```
 --no-gtk3-theme
 ```
-Don't display GTK3 theme name. The GTK3 theme name is read from ```$HOME/.config/gtk-3.0/settings.ini```, if it doesn't exist it's read from ```/etc/gtk-3.0/settings.ini```. If neither one of them exists, _**None**_ is displayed.
+Don't show GTK3 theme name. The GTK3 theme name is read from ```$HOME/.config/gtk-3.0/settings.ini```, if it doesn't exist it's read from ```/etc/gtk-3.0/settings.ini```. If neither one of them exists, _**None**_ is displayed.
 
 ```
 --no-gtk3-icons-theme
 ```
-Don't display GTK3 icon theme name. The icon thene name is read the same way GTK3 theme name is.
+Don't show GTK3 icon theme name. The icon thene name is read the same way GTK3 theme name is.
 
 ```
 --no-gtk3-font
 ```
-Don't display GTK3 font name. The font name is read the same way GTK3 theme name is.
+Don't show GTK3 font name. The font name is read the same way GTK3 theme name is.
+
+```
+--no-gtk3-cursor-theme
+```
+Don't show GTK3 cursor theme name. The cursor theme name is read the same way GTK3 theme name is.
 
 ```
 --no-terminal
 ```
-Don't display terminal name.
+Don't show terminal name.
 
 ```
 --no-editor
 ```
-Don't display the default editor's name.
+Don't show the default editor's name.
 
 ```
 --no-packages
 ```
-Don't display package count on Arch Linux and Arch Linux based distributions. The package count is set by reading the ```/var/lib/pacman/local``` directory. If the directory doesn't exist (on other distributions), the package count is set to zero.
+Don't show package count on Arch Linux and Arch Linux based distributions. The package count is set by reading the ```/var/lib/pacman/local``` directory. If the directory doesn't exist (on other distributions), the package count is set to zero.
 
 ```
 --no-memory
@@ -182,7 +192,7 @@ Set the string that separates the variable name from the value (default is ":").
 ```
 --memory-unit
 ```
-Set the unit (MB or GB) to display memory usage in (default is GB). Case is insensitive.
+Set the unit (MB or GB) to show memory usage in (default is GB). Case is insensitive.
 
 ```
 --swap-unit
@@ -219,43 +229,43 @@ Set the time and date format to be used for "**Up since**". The format used is _
 
 **Supported strftime formats**
 
-| Code | Example       | Description                                                                           |
-| ---- | ------------- | ------------------------------------------------------------------------------------- |
-| `%A` | `Sunday`      | Full weekday name                                                                     |
-| `%a` | `Sun`         | Abbreviated weekday name                                                              |
-| `%B` | `September`   | Full month name                                                                       |
-| `%b` | `Sep`         | Abbreviated month name                                                                |
-| `%C` | `20`          | (`year / 100`) as number. Single digits are preceded by zero                          |
-| `%D` | `09/21/14`    | Equivalent to `%m/%d/%y`                                                              |
-| `%d` | `21`          | Day of month as number. Single digits are preceded by zero                            |
-| `%e` | `21`          | Day of month as number. Single digits are preceded by a blank                         |
-| `%f` | `001234`      | Microsecond as a six digit decimal number, zero-padded on the left                    |
-| `%F` | `2014-09-21`  | Equivalent to` %Y-%m-%d`                                                              |
-| `%H` | `15`          | The hour (24 hour clock) as a number. Single digits are preceded by zero              |
-| `%h` | `Sep`         | Same as `%b`                                                                          |
-| `%I` | `03`          | The hour (12 hour clock) as a number. Single digits are preceded by zero              |
-| `%j` | `264`         | The day of the year as a decimal number. Single digits are preced by zeros            |
-| `%k` | `15`          | The hour (24 hour clock) as a number. Single digits are preceded by a blank           |
-| `%L` | `001`         | Millisecond as a three digit decimal number, zero-padded on the left                  |
-| `%l` | `11`          | Replaced by the hour (12 hour clock) as a number. Single digits are preceded by blank |
-| `%M` | `32`          | Replaced by the minute as a decimal number. Single digits are preceded by a zero      |
-| `%m` | `09`          | Replaced by the month as a decimal number. Single digits are preceded by a zero       |
-| `%N` | `001234567`   | Nanosecond as a 9 digit decimal number, zero-padded on the left                       |
-| `%n` | `\n`          | A newline                                                                             |
-| `%P` | `am`          | am or pm as appropriate                                                               |
-| `%p` | `AM`          | AM or PM as appropriate                                                               |
-| `%R` | `15:32`       | Equivalent to `%H:%M`                                                                 |
-| `%r` | `03:32:05 AM` | Equivalent to `%I:%M:%S %p`                                                           |
-| `%S` | `05`          | The second as a number. Single digits are preceded by a zero                          |
-| `%s` | `1461497457`  | The number of seconds since the Epoch, UTC                                            |
-| `%T` | `15:32:05`    | Equivalant to `%H:%M:%S`                                                              |
-| `%t` | `\t`          | A tab                                                                                 |
-| `%v` | `21-Sep-2014` | Equivalent to `%e-%b-%Y`                                                              |
-| `%w` | `0`           | The weekday (Sunday as first day of the week) as a number                             |
-| `%Y` | `2014`        | Replaced by the year with century as a number                                         |
-| `%y` | `14`          | Year without century as a number. Single digits are preceded by zero                  |
-| `%Z` | `UTC`         | Time zone name                                                                        |
-| `%z` | `-0700`       | The time zone offset from UTC                                                         |
+| Code | Example  | Description |
+| ------- | ------------- | ----------------- |
+| `%A` | `Sunday` | Full weekday name |
+| `%a` | `Sun` | Abbreviated weekday name |
+| `%B` | `September` | Full month name |
+| `%b` | `Sep` | Abbreviated month name |
+| `%C` | `20` | (`year / 100`) as number. Single digits are preceded by zero |
+| `%D` | `09/21/14` | Equivalent to `%m/%d/%y` |
+| `%d` | `21` | Day of month as number. Single digits are preceded by zero |
+| `%e` | `21` | Day of month as number. Single digits are preceded by a blank |
+| `%f` | `001234` | Microsecond as a six digit decimal number, zero-padded on the left |
+| `%F` | `2014-09-21` | Equivalent to` %Y-%m-%d` |
+| `%H` | `15` | The hour (24 hour clock) as a number. Single digits are preceded by zero |
+| `%h` | `Sep` | Same as `%b` |
+| `%I` | `03` | The hour (12 hour clock) as a number. Single digits are preceded by zero |
+| `%j` | `264` | The day of the year as a decimal number. Single digits are preced by zeros |
+| `%k` | `15` | The hour (24 hour clock) as a number. Single digits are preceded by a blank |
+| `%L` | `001` | Millisecond as a three digit decimal number, zero-padded on the left |
+| `%l` | `11` | Replaced by the hour (12 hour clock) as a number. Single digits are preceded by blank |
+| `%M` | `32` | Replaced by the minute as a decimal number. Single digits are preceded by a zero |
+| `%m` | `09` | Replaced by the month as a decimal number. Single digits are preceded by a zero |
+| `%N` | `001234567` | Nanosecond as a 9 digit decimal number, zero-padded on the left |
+| `%n` | `\n` | A newline |
+| `%P` | `am` | am or pm as appropriate |
+| `%p` | `AM` | AM or PM as appropriate |
+| `%R` | `15:32` | Equivalent to `%H:%M` |
+| `%r` | `03:32:05 AM` | Equivalent to `%I:%M:%S %p` |
+| `%S` | `05` | The second as a number. Single digits are preceded by a zero |
+| `%s` | `1461497457`  | The number of seconds since the Epoch, UTC |
+| `%T` | `15:32:05` | Equivalant to `%H:%M:%S` |
+| `%t` | `\t` | A tab |
+| `%v` | `21-Sep-2014` | Equivalent to `%e-%b-%Y` |
+| `%w` | `0` | The weekday (Sunday as first day of the week) as a number  |
+| `%Y` | `2014` | Replaced by the year with century as a number  |
+| `%y` | `14` | Year without century as a number. Single digits are preceded by zero  |
+| `%Z` | `UTC` | Time zone name  |
+| `%z` | `-0700` | The time zone offset from UTC |
 
 ```
 --name-color

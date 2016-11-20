@@ -10,9 +10,10 @@ import (
 )
 
 type GTK struct {
-	Theme string
-	Icons string
-	Font  string
+	Theme  string
+	Icons  string
+	Font   string
+	Cursor string
 }
 
 func GetWM() string {
@@ -106,6 +107,8 @@ func GetGTKInfo(f string) GTK {
 			gtk.Icons = value
 		case "gtk-font-name":
 			gtk.Font = value
+		case "gtk-cursor-theme-name":
+			gtk.Cursor = value
 		}
 	}
 
