@@ -296,39 +296,19 @@ _**foregroundColor+attributes:backgroundColor+attributes,foregroundColor+attribu
 
 There are two sections of the body, _**upper**_ and _**lower**_ separated by ",".
 
-E.g.
-
-```
---body-color red+h:red,green+h:green
-```
+E.g. ```--body-color red+h:red,green+h:green```
 
 Parts of the format can be omitted. If only colors for the upper body are specified, they will be used to color the whole body.
 
-```
---body-color red
-```
-Set only foreground color
+Set only foreground color: ```--body-color red```
 
-```
---body-color :green
-```
-Set only background color
+Set only background color: ```--body-color :green```
 
-```
---body-color red,green
-```
-Set upper and lower body colors without background colors
+Set upper and lower body colors without background colors: ```--body-color red,green```
 
-```
---body-color red+h:red
-```
-Set only upper foreground and background colors which will colorize the whole body with the same colors
+Set only upper foreground and background colors which will colorize the whole body with the same colors: ```--body-color red+h:red```
 
-```
---body-color red+h:red,green
-```
-Set upper foreground and background colors with only lower foreground color
-
+Set upper foreground and background colors with only lower foreground color: ```--body-color red+h:red,green```
 
 **Colors**
 
