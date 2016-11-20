@@ -72,76 +72,76 @@ var RootCmd = &cobra.Command{
 
 		opt := archey.New()
 
-		opt.Show.OS = viper.GetBool("show.noOS")
-		opt.Show.Arch = viper.GetBool("show.noArch")
-		opt.Show.Kernel = viper.GetBool("show.noKernel")
-		opt.Show.User = viper.GetBool("show.noUser")
-		opt.Show.Hostname = viper.GetBool("show.noHostname")
-		opt.Show.Uptime = viper.GetBool("show.noUptime")
-		opt.Show.UpSince = viper.GetBool("show.noUpSince")
-		opt.Show.WM = viper.GetBool("show.noWM")
-		opt.Show.DE = viper.GetBool("show.noDE")
-		opt.Show.GTK2Theme = viper.GetBool("show.noGTK2Theme")
-		opt.Show.GTK2IconTheme = viper.GetBool("show.noGTK2IconTheme")
-		opt.Show.GTK2Font = viper.GetBool("show.noGTK2Font")
-		opt.Show.GTK2CursorTheme = viper.GetBool("show.noGTK2CursorTheme")
-		opt.Show.GTK3Theme = viper.GetBool("show.noGTK3Theme")
-		opt.Show.GTK3IconTheme = viper.GetBool("show.noGTK3IconTheme")
-		opt.Show.GTK3Font = viper.GetBool("show.noGTK3Font")
-		opt.Show.GTK3CursorTheme = viper.GetBool("show.noGTK3CursorTheme")
-		opt.Show.Terminal = viper.GetBool("show.noTerminal")
-		opt.Show.Shell = viper.GetBool("show.noShell")
-		opt.Show.Editor = viper.GetBool("show.noEditor")
-		opt.Show.Packages = viper.GetBool("show.noPackages")
-		opt.Show.Memory = viper.GetBool("show.noMemory")
-		opt.Show.Swap = viper.GetBool("show.noSwap")
-		opt.Show.CPU = viper.GetBool("show.noCPU")
-		opt.Show.Root = viper.GetBool("show.noRoot")
-		opt.Show.Home = viper.GetBool("show.noHome")
+		opt.Show.OS = viper.GetBool("show.no_os")
+		opt.Show.Arch = viper.GetBool("show.no_arch")
+		opt.Show.Kernel = viper.GetBool("show.no_kernel")
+		opt.Show.User = viper.GetBool("show.no_user")
+		opt.Show.Hostname = viper.GetBool("show.no_hostname")
+		opt.Show.Uptime = viper.GetBool("show.no_uptime")
+		opt.Show.UpSince = viper.GetBool("show.no_up_since")
+		opt.Show.WM = viper.GetBool("show.no_wm")
+		opt.Show.DE = viper.GetBool("show.no_de")
+		opt.Show.GTK2Theme = viper.GetBool("show.no_gtk2_theme")
+		opt.Show.GTK2IconTheme = viper.GetBool("show.no_gtk2_icon_theme")
+		opt.Show.GTK2Font = viper.GetBool("show.no_gtk2_font")
+		opt.Show.GTK2CursorTheme = viper.GetBool("show.no_gtk2_cursor_theme")
+		opt.Show.GTK3Theme = viper.GetBool("show.no_gtk3_theme")
+		opt.Show.GTK3IconTheme = viper.GetBool("show.no_gtk3_icon_theme")
+		opt.Show.GTK3Font = viper.GetBool("show.no_gtk3_font")
+		opt.Show.GTK3CursorTheme = viper.GetBool("show.no_gtk3_cursor_theme")
+		opt.Show.Terminal = viper.GetBool("show.no_terminal")
+		opt.Show.Shell = viper.GetBool("show.no_shell")
+		opt.Show.Editor = viper.GetBool("show.no_editor")
+		opt.Show.Packages = viper.GetBool("show.no_packages")
+		opt.Show.Memory = viper.GetBool("show.no_memory")
+		opt.Show.Swap = viper.GetBool("show.no_swap")
+		opt.Show.CPU = viper.GetBool("show.no_cpu")
+		opt.Show.Root = viper.GetBool("show.no_root")
+		opt.Show.Home = viper.GetBool("show.no_home")
 
 		if viper.GetString("options.sep") != "" {
 			opt.Sep = viper.GetString("options.sep")
 		}
 
-		if viper.GetString("options.memoryUnit") != "" {
-			opt.MemoryUnit = viper.GetString("options.memoryUnit")
+		if viper.GetString("options.memory_unit") != "" {
+			opt.MemoryUnit = viper.GetString("options.memory_unit")
 		}
 
-		if viper.GetString("options.swapUnit") != "" {
-			opt.SwapUnit = viper.GetString("options.swapUnit")
+		if viper.GetString("options.swap_unit") != "" {
+			opt.SwapUnit = viper.GetString("options.swap_unit")
 		}
 
-		if viper.GetString("options.diskUnit") != "" {
-			opt.DiskUnit = viper.GetString("options.diskUnit")
+		if viper.GetString("options.disk_unit") != "" {
+			opt.DiskUnit = viper.GetString("options.disk_unit")
 		}
 
 		// NOTE: slice binds to pflag not handled correctly by viper - alexdreptu (10 Nov 2016)
 		opt.Paths = viper.GetStringSlice("options.paths")
-		opt.PathFull = viper.GetBool("options.pathFull")
-		opt.ShellFull = viper.GetBool("options.shellFull")
+		opt.PathFull = viper.GetBool("options.path_full")
+		opt.ShellFull = viper.GetBool("options.shell_full")
 
-		if viper.GetString("options.upSinceFormat") != "" {
-			opt.UpSinceFormat = viper.GetString("options.upSinceFormat")
+		if viper.GetString("options.up_since_format") != "" {
+			opt.UpSinceFormat = viper.GetString("options.up_since_format")
 		}
 
-		if viper.GetString("colors.nameColor") != "" {
-			opt.Colors.Name = viper.GetString("colors.nameColor")
+		if viper.GetString("colors.name_color") != "" {
+			opt.Colors.Name = viper.GetString("colors.name_color")
 		}
 
-		if viper.GetString("colors.textColor") != "" {
-			opt.Colors.Text = viper.GetString("colors.textColor")
+		if viper.GetString("colors.text_color") != "" {
+			opt.Colors.Text = viper.GetString("colors.text_color")
 		}
 
-		if viper.GetString("colors.sepColor") != "" {
-			opt.Colors.Sep = viper.GetString("colors.sepColor")
+		if viper.GetString("colors.sep_color") != "" {
+			opt.Colors.Sep = viper.GetString("colors.sep_color")
 		}
 
-		if len(viper.GetStringSlice("colors.bodyColor")) != 0 {
-			opt.Colors.Body = viper.GetStringSlice("colors.bodyColor")
+		if len(viper.GetStringSlice("colors.body_color")) != 0 {
+			opt.Colors.Body = viper.GetStringSlice("colors.body_color")
 		}
 
 		// TODO: implement - alexdreptu (08 Nov 2016)
-		if viper.GetBool("options.noColor") {
+		if viper.GetBool("options.no_color") {
 			fmt.Println("to be implemented")
 			os.Exit(1)
 		}
@@ -206,47 +206,47 @@ func init() {
 	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
 	RootCmd.Flags().StringVar(&config, "config", "", "config file")
 
-	viper.BindPFlag("show.noOS", RootCmd.Flags().Lookup("no-os"))
-	viper.BindPFlag("show.noArch", RootCmd.Flags().Lookup("no-arch"))
-	viper.BindPFlag("show.noKernel", RootCmd.Flags().Lookup("no-kernel"))
-	viper.BindPFlag("show.noUser", RootCmd.Flags().Lookup("no-user"))
-	viper.BindPFlag("show.noHostname", RootCmd.Flags().Lookup("no-hostname"))
-	viper.BindPFlag("show.noUptime", RootCmd.Flags().Lookup("no-uptime"))
-	viper.BindPFlag("show.noUpSince", RootCmd.Flags().Lookup("no-up-since"))
-	viper.BindPFlag("show.noWM", RootCmd.Flags().Lookup("no-wm"))
-	viper.BindPFlag("show.noDE", RootCmd.Flags().Lookup("no-de"))
-	viper.BindPFlag("show.noGTK2Theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
-	viper.BindPFlag("show.noGTK2IconTheme", RootCmd.Flags().Lookup("no-gtk2-icon-theme"))
-	viper.BindPFlag("show.noGTK2Font", RootCmd.Flags().Lookup("no-gtk2-font"))
-	viper.BindPFlag("show.noGTK2CursorTheme", RootCmd.Flags().Lookup("no-gtk2-cursor-theme"))
-	viper.BindPFlag("show.noGTK3Theme", RootCmd.Flags().Lookup("no-gtk3-theme"))
-	viper.BindPFlag("show.noGTK3IconTheme", RootCmd.Flags().Lookup("no-gtk3-icon-theme"))
-	viper.BindPFlag("show.noGTK3Font", RootCmd.Flags().Lookup("no-gtk3-font"))
-	viper.BindPFlag("show.noGTK3CursorTheme", RootCmd.Flags().Lookup("no-gtk3-cursor-theme"))
-	viper.BindPFlag("show.noTerminal", RootCmd.Flags().Lookup("no-terminal"))
-	viper.BindPFlag("show.noShell", RootCmd.Flags().Lookup("no-shell"))
-	viper.BindPFlag("show.noEditor", RootCmd.Flags().Lookup("no-editor"))
-	viper.BindPFlag("show.noPackages", RootCmd.Flags().Lookup("no-packages"))
-	viper.BindPFlag("show.noMemory", RootCmd.Flags().Lookup("no-memory"))
-	viper.BindPFlag("show.noSwap", RootCmd.Flags().Lookup("no-swap"))
-	viper.BindPFlag("show.noCPU", RootCmd.Flags().Lookup("no-cpu"))
-	viper.BindPFlag("show.noRoot", RootCmd.Flags().Lookup("no-root"))
-	viper.BindPFlag("show.noHome", RootCmd.Flags().Lookup("no-home"))
+	viper.BindPFlag("show.no_os", RootCmd.Flags().Lookup("no-os"))
+	viper.BindPFlag("show.no_arch", RootCmd.Flags().Lookup("no-arch"))
+	viper.BindPFlag("show.no_kernel", RootCmd.Flags().Lookup("no-kernel"))
+	viper.BindPFlag("show.no_user", RootCmd.Flags().Lookup("no-user"))
+	viper.BindPFlag("show.no_hostname", RootCmd.Flags().Lookup("no-hostname"))
+	viper.BindPFlag("show.no_uptime", RootCmd.Flags().Lookup("no-uptime"))
+	viper.BindPFlag("show.no_up_since", RootCmd.Flags().Lookup("no-up-since"))
+	viper.BindPFlag("show.no_wm", RootCmd.Flags().Lookup("no-wm"))
+	viper.BindPFlag("show.no_de", RootCmd.Flags().Lookup("no-de"))
+	viper.BindPFlag("show.no_gtk2_theme", RootCmd.Flags().Lookup("no-gtk2-theme"))
+	viper.BindPFlag("show.no_gtk2_icon_theme", RootCmd.Flags().Lookup("no-gtk2-icon-theme"))
+	viper.BindPFlag("show.no_gtk2_font", RootCmd.Flags().Lookup("no-gtk2-font"))
+	viper.BindPFlag("show.no_gtk2_cursor_theme", RootCmd.Flags().Lookup("no-gtk2-cursor-theme"))
+	viper.BindPFlag("show.no_gtk3_theme", RootCmd.Flags().Lookup("no-gtk3-theme"))
+	viper.BindPFlag("show.no_gtk3_icon_theme", RootCmd.Flags().Lookup("no-gtk3-icon-theme"))
+	viper.BindPFlag("show.no_gtk3_font", RootCmd.Flags().Lookup("no-gtk3-font"))
+	viper.BindPFlag("show.no_gtk3_cursor_theme", RootCmd.Flags().Lookup("no-gtk3-cursor-theme"))
+	viper.BindPFlag("show.no_terminal", RootCmd.Flags().Lookup("no-terminal"))
+	viper.BindPFlag("show.no_shell", RootCmd.Flags().Lookup("no-shell"))
+	viper.BindPFlag("show.no_editor", RootCmd.Flags().Lookup("no-editor"))
+	viper.BindPFlag("show.no_packages", RootCmd.Flags().Lookup("no-packages"))
+	viper.BindPFlag("show.no_memory", RootCmd.Flags().Lookup("no-memory"))
+	viper.BindPFlag("show.no_swap", RootCmd.Flags().Lookup("no-swap"))
+	viper.BindPFlag("show.no_cpu", RootCmd.Flags().Lookup("no-cpu"))
+	viper.BindPFlag("show.no_Root", RootCmd.Flags().Lookup("no-root"))
+	viper.BindPFlag("show.no_Home", RootCmd.Flags().Lookup("no-home"))
 
 	viper.BindPFlag("options.sep", RootCmd.Flags().Lookup("sep"))
-	viper.BindPFlag("options.memoryUnit", RootCmd.Flags().Lookup("memory-unit"))
-	viper.BindPFlag("options.swapUnit", RootCmd.Flags().Lookup("swap-unit"))
-	viper.BindPFlag("options.diskUnit", RootCmd.Flags().Lookup("disk-unit"))
+	viper.BindPFlag("options.memory_unit", RootCmd.Flags().Lookup("memory-unit"))
+	viper.BindPFlag("options.swap_unit", RootCmd.Flags().Lookup("swap-unit"))
+	viper.BindPFlag("options.disk_unit", RootCmd.Flags().Lookup("disk-unit"))
 	viper.BindPFlag("options.paths", RootCmd.Flags().Lookup("paths"))
-	viper.BindPFlag("options.pathFull", RootCmd.Flags().Lookup("path-full"))
-	viper.BindPFlag("options.shellFull", RootCmd.Flags().Lookup("shell-full"))
-	viper.BindPFlag("options.upSinceFormat", RootCmd.Flags().Lookup("up-since-format"))
-	viper.BindPFlag("options.noColor", RootCmd.Flags().Lookup("no-color"))
+	viper.BindPFlag("options.path_full", RootCmd.Flags().Lookup("path-full"))
+	viper.BindPFlag("options.shell_full", RootCmd.Flags().Lookup("shell-full"))
+	viper.BindPFlag("options.up_since_format", RootCmd.Flags().Lookup("up-since-format"))
+	viper.BindPFlag("options.no_color", RootCmd.Flags().Lookup("no-color"))
 
-	viper.BindPFlag("colors.nameColor", RootCmd.Flags().Lookup("name-color"))
-	viper.BindPFlag("colors.textColor", RootCmd.Flags().Lookup("text-color"))
-	viper.BindPFlag("colors.sepColor", RootCmd.Flags().Lookup("sep-color"))
-	viper.BindPFlag("colors.bodyColor", RootCmd.Flags().Lookup("body-color"))
+	viper.BindPFlag("colors.name_color", RootCmd.Flags().Lookup("name-color"))
+	viper.BindPFlag("colors.text_color", RootCmd.Flags().Lookup("text-color"))
+	viper.BindPFlag("colors.sep_color", RootCmd.Flags().Lookup("sep-color"))
+	viper.BindPFlag("colors.body_color", RootCmd.Flags().Lookup("body-color"))
 }
 
 func initConfig() {
