@@ -124,13 +124,18 @@ var (
 	}
 )
 
+// gtk config locations
 var (
+	// user wide
 	userGTK2rc = filepath.Join(os.Getenv("HOME"), ".gtkrc-2.0")
-	sysGTK2rc  = "/etc/gtk-2.0/gtkrc"
 	userGTK3rc = filepath.Join(os.Getenv("HOME"), ".config/gtk-3.0/settings.ini")
-	sysGTK3rc  = "/etc/gtk-3.0/settings.ini"
+	// system wide
+	sysGTK2rc = "/etc/gtk-2.0/gtkrc"
+	sysGTK3rc = "/etc/gtk-3.0/settings.ini"
 )
 
+// Render returns the rendered logo with all
+// the information added based on the chosen options
 func (o *Options) Render() (string, error) {
 	info, err := getFormattedInfo(o)
 	if err != nil {
@@ -201,7 +206,7 @@ func (o *Options) Render() (string, error) {
 	// always append one empty line at the end of the info
 	logo = append(logo, "")
 
-	t, err := template.New("Arch Logo").Parse(strings.Join(logo, "\n"))
+	t, err := template.New("logo").Parse(strings.Join(logo, "\n"))
 	if err != nil {
 		return "", err
 	}
@@ -388,8 +393,9 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if !opt.Show.Editor {
+		editor := strings.Title(os.Getenv("EDITOR"))
 		editorFormat := fmt.Sprintf(infoFormat,
-			nameColor("Editor"), sepColor(opt.Sep), textColor(os.Getenv("EDITOR")))
+			nameColor("Editor"), sepColor(opt.Sep), textColor(editor))
 		info = append(info, editorFormat)
 	}
 
@@ -516,7 +522,8 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	if len(opt.Paths) != 0 {
-		// NOTE: fix to viper's slice bind handling problem - alexdreptu (10 Nov 2016)
+		// NOTE: fix to viper's slice bind handling problem
+		// - Alexandru Dreptu (10 Nov 2016)
 		paths := func() []string {
 			var sl []string
 			// if theres more than one path string in the slice

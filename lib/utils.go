@@ -122,3 +122,7 @@ func GetGTKInfo(f string) GTK {
 func ListColors() {
 	ansi.PrintStyles()
 }
+
+func NoColor() {
+	ansi.DisableColors(true)
+}

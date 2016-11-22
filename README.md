@@ -60,7 +60,7 @@ alectic@particular $
 
 _**Archey-go**_ can be used with or without a config file. The configuration file format is _**[toml](https://github.com/toml-lang/toml)**_. Each flag responsible for configuration has an equivalent variable in its configuration file. See _**[sample_config.toml](https://github.com/alexdreptu/archey-go/blob/master/sample_config.toml)**_.
 
-**NOTE:** _**Archey-go**_ doesn't include an option to take a screenshot, as I think this shouldn't be handled by _**Archey-go**_. Instead you can use _**scrot**_. If you just want to take a screenshot of the terminal window, you ```scrot -s -q 100 screenshot1.png``` after which you click on the terminal window. The next window you click your mouse pointer on after you run the command, will be screenshotted. For convenience run it from a command runner, usually set to ```alt+F2``` or directly from the terminal window in which _**Archey-go**_ was executed. Otherwise without ```-s``` or with a counter ```-cd 5``` to screenshot the whole display.
+**NOTE:** _**Archey-go**_ doesn't include an option to take a screenshot, as I think this shouldn't be handled by _**Archey-go**_. Instead you can use _**scrot**_. If you just want to take a screenshot of the terminal window, you ```scrot -s -q 100 screenshot1.png``` after which you click on the terminal window. The next window you click your mouse pointer on after you run the command, will be screenshotted. For convenience run it from a command runner, usually set to ```alt+F2``` or directly from the terminal window in which _**Archey-go**_ was executed. Otherwise without ```-s``` or with a counter ```-cd 5``` to screenshot the whole display after 5 seconds.
 
 To install _**scrot**_ you ```pacman -S scrot```.
 
@@ -336,6 +336,11 @@ Set upper foreground and background colors with only lower foreground color: ```
 --list-colors
 ```
 Show colors and styles
+
+```
+--no-color
+```
+Disable colors
 
 ```
 --config

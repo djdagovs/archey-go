@@ -115,7 +115,8 @@ var RootCmd = &cobra.Command{
 			opt.DiskUnit = viper.GetString("options.disk_unit")
 		}
 
-		// NOTE: slice binds to pflag not handled correctly by viper - alexdreptu (10 Nov 2016)
+		// NOTE: slice binds to pflag not handled correctly by viper
+		// - Alexandru Dreptu (10 Nov 2016)
 		opt.Paths = viper.GetStringSlice("options.paths")
 		opt.PathFull = viper.GetBool("options.path_full")
 		opt.ShellFull = viper.GetBool("options.shell_full")
@@ -140,10 +141,8 @@ var RootCmd = &cobra.Command{
 			opt.Colors.Body = viper.GetStringSlice("colors.body_color")
 		}
 
-		// TODO: implement - alexdreptu (08 Nov 2016)
 		if viper.GetBool("options.no_color") {
-			fmt.Println("to be implemented")
-			os.Exit(1)
+			archey.NoColor()
 		}
 
 		if cmd.Flag("list-colors").Changed {
