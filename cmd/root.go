@@ -65,10 +65,7 @@ var (
 	noColor       bool
 )
 
-var (
-	listColors bool
-	config     string
-)
+var config string
 
 var usageTemplate = `Version: {{version}}
 Author: {{author}}
@@ -172,6 +169,11 @@ var RootCmd = &cobra.Command{
 			os.Exit(1)
 		}
 
+		if cmd.Flag("version").Changed {
+			fmt.Println("version " + version)
+			os.Exit(0)
+		}
+
 		info, err := opt.Render()
 		if err != nil {
 			return err
@@ -229,9 +231,10 @@ func init() {
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
 	RootCmd.Flags().StringSliceVar(&bodyColor, "body-color", nil, "color of the logo body")
-	RootCmd.Flags().BoolVar(&noColor, "no-color", false, "don't use any colors")
-	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
-	RootCmd.Flags().StringVar(&config, "config", "", "config file")
+	RootCmd.Flags().StringVarP(&config, "config", "c", "", "config file")
+	RootCmd.Flags().BoolP("version", "v", false, "print version")
+	RootCmd.Flags().BoolP("no-color", "n", false, "don't use any colors")
+	RootCmd.Flags().BoolP("list-colors", "l", false, "print all colors and styles")
 
 	viper.BindPFlag("show.no_os", RootCmd.Flags().Lookup("no-os"))
 	viper.BindPFlag("show.no_arch", RootCmd.Flags().Lookup("no-arch"))
