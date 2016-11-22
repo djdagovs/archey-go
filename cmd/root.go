@@ -121,7 +121,7 @@ var RootCmd = &cobra.Command{
 		}
 
 		if cmd.Flag("version").Changed {
-			fmt.Println("version " + version)
+			fmt.Println("Archey-go v" + version)
 			os.Exit(0)
 		}
 

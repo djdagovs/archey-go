@@ -135,7 +135,7 @@ var (
 )
 
 // Render returns the rendered logo with all
-// the information added based on the chosen options
+// the information added based on the specified options
 func (o *Options) Render() (string, error) {
 	info, err := getFormattedInfo(o)
 	if err != nil {
