@@ -9,6 +9,13 @@ import (
 	"github.com/spf13/viper"
 )
 
+const (
+	version  = "0.1.0"
+	author   = "Alexandru Dreptu <alexdreptu@gmail.com>"
+	homeLink = "https://github.com/alexdreptu/archey-go"
+	bugsLink = "https://github.com/alexdreptu/archey-go/issues"
+)
+
 var (
 	noOS              bool
 	noArch            bool
@@ -58,8 +65,25 @@ var (
 	noColor       bool
 )
 
-var listColors bool
-var config string
+var (
+	listColors bool
+	config     string
+)
+
+var usageTemplate = `Version: {{version}}
+Author: {{author}}
+Home: {{homeLink}}
+
+Usage:
+      {{.Name}} [flags]
+
+Example:
+      {{.Name}} {{.Example}}
+
+Flags:
+{{.Flags.FlagUsages}}
+Report bugs to {{bugsLink}}
+`
 
 var RootCmd = &cobra.Command{
 	Use:   "archey-go",
@@ -115,8 +139,6 @@ var RootCmd = &cobra.Command{
 			opt.DiskUnit = viper.GetString("options.disk_unit")
 		}
 
-		// NOTE: slice binds to pflag not handled correctly by viper
-		// - Alexandru Dreptu (10 Nov 2016)
 		opt.Paths = viper.GetStringSlice("options.paths")
 		opt.PathFull = viper.GetBool("options.path_full")
 		opt.ShellFull = viper.GetBool("options.shell_full")
@@ -162,6 +184,13 @@ var RootCmd = &cobra.Command{
 
 func init() {
 	cobra.OnInitialize(initConfig)
+	cobra.AddTemplateFunc("version", func() string { return version })
+	cobra.AddTemplateFunc("author", func() string { return author })
+	cobra.AddTemplateFunc("homeLink", func() string { return homeLink })
+	cobra.AddTemplateFunc("bugsLink", func() string { return bugsLink })
+	RootCmd.Example = `--body-color 111 --name-color 150 --sep ' ->' --sep-color 191 \
+	--shell-full --memory-unit mb --no-swap --paths /tmp,/usr --path-full`
+	RootCmd.SetUsageTemplate(usageTemplate)
 	RootCmd.Flags().BoolVar(&noOS, "no-os", false, "don't print os name")
 	RootCmd.Flags().BoolVar(&noArch, "no-arch", false, "don't print architecture")
 	RootCmd.Flags().BoolVar(&noKernel, "no-kernel", false, "don't print kernel version")
@@ -200,7 +229,6 @@ func init() {
 	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
 	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
 	RootCmd.Flags().StringSliceVar(&bodyColor, "body-color", nil, "color of the logo body")
-	// TODO: implement - Alexandru Dreptu (20 Nov 2016)
 	RootCmd.Flags().BoolVar(&noColor, "no-color", false, "don't use any colors")
 	RootCmd.Flags().BoolVar(&listColors, "list-colors", false, "print all colors and styles")
 	RootCmd.Flags().StringVar(&config, "config", "", "config file")

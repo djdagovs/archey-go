@@ -523,7 +523,6 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 
 	if len(opt.Paths) != 0 {
 		// NOTE: fix to viper's slice bind handling problem
-		// - Alexandru Dreptu (10 Nov 2016)
 		paths := func() []string {
 			var sl []string
 			// if theres more than one path string in the slice
