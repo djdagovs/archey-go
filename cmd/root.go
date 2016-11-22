@@ -16,55 +16,6 @@ const (
 	bugsLink = "https://github.com/alexdreptu/archey-go/issues"
 )
 
-var (
-	noOS              bool
-	noArch            bool
-	noKernel          bool
-	noUser            bool
-	noHostname        bool
-	noUptime          bool
-	noUpSince         bool
-	noWM              bool
-	noDE              bool
-	noGTK2Theme       bool
-	noGTK2IconTheme   bool
-	noGTK2Font        bool
-	noGTK2CursorTheme bool
-	noGTK3Theme       bool
-	noGTK3IconTheme   bool
-	noGTK3CursorTheme bool
-	noGTK3Font        bool
-	noTerminal        bool
-	noShell           bool
-	noEditor          bool
-	noPackages        bool
-	noMemory          bool
-	noSwap            bool
-	noCPU             bool
-	noRoot            bool
-	noHome            bool
-)
-
-var (
-	nameColor string
-	textColor string
-	sepColor  string
-	bodyColor []string
-)
-
-// options
-var (
-	sep           string
-	diskUnit      string
-	memoryUnit    string
-	swapUnit      string
-	paths         []string
-	pathFull      bool
-	shellFull     bool
-	upSinceFormat string
-	noColor       bool
-)
-
 var config string
 
 var usageTemplate = `Version: {{version}}
@@ -193,48 +144,48 @@ func init() {
 	RootCmd.Example = `--body-color 111 --name-color 150 --sep ' ->' --sep-color 191 \
 	--shell-full --memory-unit mb --no-swap --paths /tmp,/usr --path-full`
 	RootCmd.SetUsageTemplate(usageTemplate)
-	RootCmd.Flags().BoolVar(&noOS, "no-os", false, "don't print os name")
-	RootCmd.Flags().BoolVar(&noArch, "no-arch", false, "don't print architecture")
-	RootCmd.Flags().BoolVar(&noKernel, "no-kernel", false, "don't print kernel version")
-	RootCmd.Flags().BoolVar(&noUser, "no-user", false, "don't print user")
-	RootCmd.Flags().BoolVar(&noHostname, "no-hostname", false, "don't print hostname")
-	RootCmd.Flags().BoolVar(&noUptime, "no-uptime", false, "don't print uptime")
-	RootCmd.Flags().BoolVar(&noUpSince, "no-up-since", false, "don't print up since")
-	RootCmd.Flags().BoolVar(&noWM, "no-wm", false, "don't print Window Manager name")
-	RootCmd.Flags().BoolVar(&noDE, "no-de", false, "don't print Desktop Environment name")
-	RootCmd.Flags().BoolVar(&noGTK2Theme, "no-gtk2-theme", false, "don't print GTK2 theme name")
-	RootCmd.Flags().BoolVar(&noGTK2IconTheme, "no-gtk2-icon-theme", false, "don't print GTK2 icon theme name")
-	RootCmd.Flags().BoolVar(&noGTK2Font, "no-gtk2-font", false, "don't print GTK2 font name")
-	RootCmd.Flags().BoolVar(&noGTK2CursorTheme, "no-gtk2-cursor-theme", false, "don't print GTK2 cursor theme name")
-	RootCmd.Flags().BoolVar(&noGTK3Theme, "no-gtk3-theme", false, "don't print GTK3 theme name")
-	RootCmd.Flags().BoolVar(&noGTK3IconTheme, "no-gtk3-icon-theme", false, "don't print GTK3 icon theme name")
-	RootCmd.Flags().BoolVar(&noGTK3Font, "no-gtk3-font", false, "don't print GTK3 font name")
-	RootCmd.Flags().BoolVar(&noGTK3CursorTheme, "no-gtk3-cursor-theme", false, "don't print GTK3 cursor theme name")
-	RootCmd.Flags().BoolVar(&noTerminal, "no-terminal", false, "don't print terminal name")
-	RootCmd.Flags().BoolVar(&noShell, "no-shell", false, "don't print shell name")
-	RootCmd.Flags().BoolVar(&noEditor, "no-editor", false, "don't print editor name")
-	RootCmd.Flags().BoolVar(&noPackages, "no-packages", false, "don't print packages count")
-	RootCmd.Flags().BoolVar(&noMemory, "no-memory", false, "don't print memory usage")
-	RootCmd.Flags().BoolVar(&noSwap, "no-swap", false, "don't print swap usage")
-	RootCmd.Flags().BoolVar(&noCPU, "no-cpu", false, "don't print CPU model")
-	RootCmd.Flags().BoolVar(&noRoot, "no-root", false, "don't print root disk usage")
-	RootCmd.Flags().BoolVar(&noHome, "no-home", false, "don't print home disk usage")
-	RootCmd.Flags().StringVar(&sep, "sep", "", "separator string")
-	RootCmd.Flags().StringVar(&memoryUnit, "memory-unit", "", "unit to use for memory usage")
-	RootCmd.Flags().StringVar(&swapUnit, "swap-unit", "", "unit to use for swap usage")
-	RootCmd.Flags().StringVar(&diskUnit, "disk-unit", "", "unit to use for disk usage")
-	RootCmd.Flags().StringSliceVar(&paths, "paths", nil, "additional paths to add to disk usage info")
-	RootCmd.Flags().BoolVar(&pathFull, "path-full", false, "show full paths")
-	RootCmd.Flags().BoolVar(&shellFull, "shell-full", false, "print shell's full path instead of its name")
-	RootCmd.Flags().StringVar(&upSinceFormat, "up-since-format", "", "strftime format for up since")
-	RootCmd.Flags().StringVar(&nameColor, "name-color", "", "color of the variable name")
-	RootCmd.Flags().StringVar(&textColor, "text-color", "", "color of the text")
-	RootCmd.Flags().StringVar(&sepColor, "sep-color", "", "color of the separator")
-	RootCmd.Flags().StringSliceVar(&bodyColor, "body-color", nil, "color of the logo body")
-	RootCmd.Flags().StringVarP(&config, "config", "c", "", "config file")
-	RootCmd.Flags().BoolP("version", "v", false, "print version")
+	RootCmd.Flags().Bool("no-os", false, "don't print os name")
+	RootCmd.Flags().Bool("no-arch", false, "don't print architecture")
+	RootCmd.Flags().Bool("no-kernel", false, "don't print kernel version")
+	RootCmd.Flags().Bool("no-user", false, "don't print user")
+	RootCmd.Flags().Bool("no-hostname", false, "don't print hostname")
+	RootCmd.Flags().Bool("no-uptime", false, "don't print uptime")
+	RootCmd.Flags().Bool("no-up-since", false, "don't print up since")
+	RootCmd.Flags().Bool("no-wm", false, "don't print Window Manager name")
+	RootCmd.Flags().Bool("no-de", false, "don't print Desktop Environment name")
+	RootCmd.Flags().Bool("no-gtk2-theme", false, "don't print GTK2 theme name")
+	RootCmd.Flags().Bool("no-gtk2-icon-theme", false, "don't print GTK2 icon theme name")
+	RootCmd.Flags().Bool("no-gtk2-font", false, "don't print GTK2 font name")
+	RootCmd.Flags().Bool("no-gtk2-cursor-theme", false, "don't print GTK2 cursor theme name")
+	RootCmd.Flags().Bool("no-gtk3-theme", false, "don't print GTK3 theme name")
+	RootCmd.Flags().Bool("no-gtk3-icon-theme", false, "don't print GTK3 icon theme name")
+	RootCmd.Flags().Bool("no-gtk3-font", false, "don't print GTK3 font name")
+	RootCmd.Flags().Bool("no-gtk3-cursor-theme", false, "don't print GTK3 cursor theme name")
+	RootCmd.Flags().Bool("no-terminal", false, "don't print terminal name")
+	RootCmd.Flags().Bool("no-shell", false, "don't print shell name")
+	RootCmd.Flags().Bool("no-editor", false, "don't print editor name")
+	RootCmd.Flags().Bool("no-packages", false, "don't print packages count")
+	RootCmd.Flags().Bool("no-memory", false, "don't print memory usage")
+	RootCmd.Flags().Bool("no-swap", false, "don't print swap usage")
+	RootCmd.Flags().Bool("no-cpu", false, "don't print CPU model")
+	RootCmd.Flags().Bool("no-root", false, "don't print root disk usage")
+	RootCmd.Flags().Bool("no-home", false, "don't print home disk usage")
+	RootCmd.Flags().String("sep", "", "separator string")
+	RootCmd.Flags().String("memory-unit", "", "unit to use for memory usage")
+	RootCmd.Flags().String("swap-unit", "", "unit to use for swap usage")
+	RootCmd.Flags().String("disk-unit", "", "unit to use for disk usage")
+	RootCmd.Flags().StringSlice("paths", nil, "additional paths to add to disk usage info")
+	RootCmd.Flags().Bool("path-full", false, "show full paths")
+	RootCmd.Flags().Bool("shell-full", false, "print shell's full path instead of its name")
+	RootCmd.Flags().String("up-since-format", "", "strftime format for up since")
+	RootCmd.Flags().String("name-color", "", "color of the variable name")
+	RootCmd.Flags().String("text-color", "", "color of the text")
+	RootCmd.Flags().String("sep-color", "", "color of the separator")
+	RootCmd.Flags().StringSlice("body-color", nil, "color of the logo body")
 	RootCmd.Flags().BoolP("no-color", "n", false, "don't use any colors")
 	RootCmd.Flags().BoolP("list-colors", "l", false, "print all colors and styles")
+	RootCmd.Flags().BoolP("version", "v", false, "print version")
+	RootCmd.Flags().StringVarP(&config, "config", "c", "", "config file")
 
 	viper.BindPFlag("show.no_os", RootCmd.Flags().Lookup("no-os"))
 	viper.BindPFlag("show.no_arch", RootCmd.Flags().Lookup("no-arch"))
