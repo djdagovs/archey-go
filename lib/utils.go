@@ -2,6 +2,7 @@ package archey
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 	"strings"
 
@@ -14,6 +15,10 @@ type GTK struct {
 	Icons  string
 	Font   string
 	Cursor string
+}
+
+var ErrFileEmpty = func(f string) error {
+	return fmt.Errorf("file '%s' is empty", f)
 }
 
 func GetWM() string {
@@ -42,6 +47,7 @@ func GetWM() string {
 		"wmfs":          "Wmfs",
 		"wmii":          "wmii",
 		"xfwm4":         "Xfwm",
+		"mutter":        "Mutter",
 		"qtile":         "QTile",
 		"wingo":         "Wingo",
 	}
@@ -77,12 +83,21 @@ func GetDE() string {
 	return de
 }
 
-func GetGTKInfo(f string) GTK {
+func GetGTKInfo(f string) (GTK, error) {
 	var gtk GTK
 
 	file, err := os.Open(f)
 	if err != nil {
-		return gtk
+		return gtk, err
+	}
+
+	fstat, err := file.Stat()
+	if err != nil {
+		return gtk, err
+	}
+
+	if fstat.Size() == 0 {
+		return gtk, ErrFileEmpty(file.Name())
 	}
 
 	scanner := bufio.NewScanner(file)
@@ -113,10 +128,10 @@ func GetGTKInfo(f string) GTK {
 	}
 
 	if err := scanner.Err(); err != nil {
-		return gtk
+		return gtk, err
 	}
 
-	return gtk
+	return gtk, nil
 }
 
 func ListColors() {

@@ -298,17 +298,25 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	}
 
 	var gtk GTK
+	var err error
 
 	// if ~/.gtkrc-2.0 exists use it
 	// otherwise use the system wide /etc/gtk-2.0/gtkrc
 	if utils.IsExistFile(userGTK2rc) {
-		gtk = GetGTKInfo(userGTK2rc)
+		gtk, err = GetGTKInfo(userGTK2rc)
+		if err != nil {
+			gtk.Theme = "None"
+			gtk.Icons = "None"
+			gtk.Font = "None"
+		}
 	} else if utils.IsExistFile(sysGTK2rc) {
-		gtk = GetGTKInfo(sysGTK2rc)
-	} else {
-		gtk.Theme = "None"
-		gtk.Icons = "None"
-		gtk.Font = "None"
+		gtk, err = GetGTKInfo(sysGTK2rc)
+		if err != nil {
+			gtk.Theme = "None"
+			gtk.Icons = "None"
+			gtk.Font = "None"
+			gtk.Cursor = "None"
+		}
 	}
 
 	if !opt.Show.GTK2Theme {
@@ -338,16 +346,22 @@ func getFormattedInfo(opt *Options) ([]string, error) {
 	// if ~/.config/gtkrc-3.0/settings.ini exists use it
 	// otherwise use the system wide /etc/gtk-3.0/settings.ini
 	if utils.IsExistFile(userGTK3rc) {
-		gtk = GetGTKInfo(userGTK3rc)
+		gtk, err = GetGTKInfo(userGTK3rc)
+		if err != nil {
+			gtk.Theme = "None"
+			gtk.Icons = "None"
+			gtk.Font = "None"
+			gtk.Cursor = "None"
+		}
 	} else if utils.IsExistFile(sysGTK3rc) {
-		gtk = GetGTKInfo(sysGTK3rc)
-	} else {
-		gtk.Theme = "None"
-		gtk.Icons = "None"
-		gtk.Font = "None"
-		gtk.Cursor = "None"
+		gtk, err = GetGTKInfo(sysGTK3rc)
+		if err != nil {
+			gtk.Theme = "None"
+			gtk.Icons = "None"
+			gtk.Font = "None"
+			gtk.Cursor = "None"
+		}
 	}
-
 	if !opt.Show.GTK3Theme {
 		gtkThemeFormat := fmt.Sprintf(infoFormat,
 			nameColor("GTK3 Theme"), sepColor(opt.Sep), textColor(gtk.Theme))
