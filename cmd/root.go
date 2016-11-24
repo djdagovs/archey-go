@@ -10,17 +10,17 @@ import (
 )
 
 const (
-	version  = "0.1.0"
-	author   = "Alexandru Dreptu <alexdreptu@gmail.com>"
-	homeLink = "https://github.com/alexdreptu/archey-go"
-	bugsLink = "https://github.com/alexdreptu/archey-go/issues"
+	version = "0.1.0"
+	author  = "Alexandru Dreptu <alexdreptu@gmail.com>"
+	url     = "https://github.com/alexdreptu/archey-go"
+	bugsUrl = "https://github.com/alexdreptu/archey-go/issues"
 )
 
 var config string
 
 var usageTemplate = `Version: {{version}}
 Author: {{author}}
-Home: {{homeLink}}
+URL: {{url}}
 
 Usage:
       {{.Name}} [flags]
@@ -30,7 +30,7 @@ Example:
 
 Flags:
 {{.Flags.FlagUsages}}
-Report bugs to {{bugsLink}}
+Report bugs to {{bugsUrl}}
 `
 
 var RootCmd = &cobra.Command{
@@ -139,8 +139,8 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	cobra.AddTemplateFunc("version", func() string { return version })
 	cobra.AddTemplateFunc("author", func() string { return author })
-	cobra.AddTemplateFunc("homeLink", func() string { return homeLink })
-	cobra.AddTemplateFunc("bugsLink", func() string { return bugsLink })
+	cobra.AddTemplateFunc("url", func() string { return url })
+	cobra.AddTemplateFunc("bugsUrl", func() string { return bugsUrl })
 	RootCmd.Example = `--body-color 111 --name-color 150 --sep ' ->' --sep-color 191 \
 	--shell-full --memory-unit mb --no-swap --paths /tmp,/usr --path-full`
 	RootCmd.SetUsageTemplate(usageTemplate)
