@@ -39,4 +39,4 @@ no_color = false
 name_color = "150"
 text_color = "white+h"
 sep_color = "191"
-body_color = ["cyan+h", "cyan"]
+body_color = "cyan+h:cyan"
