@@ -1,3 +1,25 @@
+// MIT License
+//
+// Copyright (c) 2016 Alexandru Dreptu
+//
+// Permission is hereby granted, free of charge, to any person obtaining a copy
+// of this software and associated documentation files (the "Software"), to deal
+// in the Software without restriction, including without limitation the rights
+// to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+// copies of the Software, and to permit persons to whom the Software is
+// furnished to do so, subject to the following conditions:
+//
+// The above copyright notice and this permission notice shall be included in all
+// copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+// IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+// FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+// AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+// LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+// OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+// SOFTWARE.
+
 package archey
 
 import (
@@ -21,6 +43,7 @@ var ErrFileEmpty = func(f string) error {
 	return fmt.Errorf("file '%s' is empty", f)
 }
 
+// GetWM returns Window Manager name
 func GetWM() string {
 	wm := "None"
 	wmList := map[string]string{
@@ -62,6 +85,7 @@ func GetWM() string {
 	return wm
 }
 
+// GetDE returns the Desktop Environment name
 func GetDE() string {
 	de := "None"
 	deList := map[string]string{
@@ -83,6 +107,8 @@ func GetDE() string {
 	return de
 }
 
+// GetGTKInfo reads gtkrc and returns a GTK type
+// containing theme name, icon theme name, font name and cursor theme name
 func GetGTKInfo(f string) (GTK, error) {
 	var gtk GTK
 
