@@ -26,7 +26,7 @@ import (
 	"fmt"
 	"os"
 
-	archey "github.com/alexdreptu/archey-go/lib"
+	archey "github.com/alexdreptu/archey-go/archey"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )

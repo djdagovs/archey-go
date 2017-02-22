@@ -4,7 +4,7 @@ Archey-go
 [![Build Status](https://travis-ci.org/alexdreptu/archey-go.svg?branch=master)](https://travis-ci.org/alexdreptu/archey-go)
 [![GoDoc](https://godoc.org/github.com/alexdreptu/archey-go?status.svg)](https://godoc.org/github.com/alexdreptu/archey-go)
 [![Platform](https://img.shields.io/badge/platform-Linux-5272b4.svg)](https://www.linuxfoundation.org/)
-[![License](https://img.shields.io/badge/license-MIT-red.svg)](https://github.com/alexdreptu/archey-go/blob/master/LICENSE)
+[![License](https://img.shields.io/badge/license-MIT-5272b4.svg)](https://github.com/alexdreptu/archey-go/blob/master/LICENSE)
 
 ## About
 
@@ -44,6 +44,8 @@ Assuming you have that set up, you install _**Archey-go**_ by executing
 ```
 go get github.com/alexdreptu/archey-go
 ```
+
+**NOTE:** From [Go 1.8](https://beta.golang.org/doc/go1.8) onwards you don't need to manually set ```$GOPATH``` and ```$GOBIN```. ```$GOPATH``` automatically [defaults](https://beta.golang.org/doc/go1.8#gopath) to ```$HOME/go```.
 
 The **_archey-go_** binary will be located in ```$GOBIN```
 ```
@@ -179,12 +181,12 @@ Don't show CPU model.
 ```
 --no-root
 ```
-Don't show root partition disk usage
+Don't show root partition disk usage.
 
 ```
 --no-home
 ```
-Don't show home partition disk usage
+Don't show home partition disk usage.
 
 ```
 --sep
@@ -199,19 +201,19 @@ Set the unit (MB or GB) to show memory usage in (default is GB). Case is insensi
 ```
 --swap-unit
 ```
-Same as ```--memory-unit```
+Same as ```--memory-unit```.
 
 ```
 --disk-unit
 ```
-Same as ```--memory-unit```
+Same as ```--memory-unit```.
 
 ```
 --paths
 ```
 Set additional paths to be showed to disk usage info. Paths are separated by ",".
 
-E.g. ```--paths /some/path1,/some/path2,/some/path3```
+E.g. ```--paths /some/path1,/some/path2,/some/path3```.
 
 ```
 --path-full
@@ -277,12 +279,12 @@ Set the color for the variable name. The format is _**foregroundColor+attributes
 ```
 --text-color
 ```
-Set the color for the text value. Same as ```--name-color```
+Set the color for the text value. Same as ```--name-color```.
 
 ```
 --sep-color
 ```
-Set the color for the separator string. Same as ```--name-color```
+Set the color for the separator string. Same as ```--name-color```.
 
 ```
 --body-color
@@ -290,7 +292,7 @@ Set the color for the separator string. Same as ```--name-color```
 Set the color for the logo body.
 
 The color format is:
-_**foregroundColor+attributes:backgroundColor+attributes,foregroundColor+attributes:backgroundColor+attributes**_
+_**foregroundColor+attributes:backgroundColor+attributes,foregroundColor+attributes:backgroundColor+attributes**_.
 
 There are two sections of the body, _**upper**_ and _**lower**_ separated by ",".
 
